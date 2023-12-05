@@ -187,7 +187,7 @@ card_2.update_layout(
 
 # card_2.show()
 # card_2.write_image("./Image")
-pio.write_image(card_2,'./Image/Card2.png', format='png')
+pio.write_image(card_2,'./SLC/Image/Card2.png', format='png')
 
 
 #creating chart for in-progress work
@@ -219,12 +219,12 @@ card_3.update_layout(
                 )
 # card_3.show()
 # card_3.write_image("./Image")
-pio.write_image(card_3,'./Image/Card3.png', format='png')
+pio.write_image(card_3,'./SLC/Image/Card3.png', format='png')
 
 
 #writing data in each table
 from docxtpl import DocxTemplate,InlineImage
-doc = DocxTemplate("./SLC_template.docx")
+doc = DocxTemplate("./SLC/SLC_template.docx")
 deps =  dataallticket['title_y'].unique()
 base_jsonall = dataallticket.to_dict('records')
 base_jsonsuccess = datasuccess.to_dict('records')
@@ -235,8 +235,8 @@ context = {
     'report_month':alldate,
     'report_date':alldateandday,
     'table1':base_jsonall,
-    'image1':InlineImage(doc,"./Image/Card2.png",width=Cm(5)),
-    'image2':InlineImage(doc,"./Image/Card3.png",width=Cm(5)),
+    'image1':InlineImage(doc,"./SLC/Image/Card2.png",width=Cm(5)),
+    'image2':InlineImage(doc,"./SLC/Image/Card3.png",width=Cm(5)),
     'table2':base_jsonsuccess,
     'table3':base_jsonop,
     'table3_have_no_data':len(base_jsonop)==0,
@@ -246,4 +246,4 @@ context = {
 
     }
 doc.render(context)
-doc.save('SLC_EDIT.docx')
+doc.save('./Allpart/Slc_edit.docx')

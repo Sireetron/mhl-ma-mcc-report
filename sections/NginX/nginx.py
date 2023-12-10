@@ -15,7 +15,10 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Pt, Cm
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from datetime import datetime
 
+month = datetime.now().month -1
+year = datetime.now().year
 
 response = requests.get('https://cc-app.mwa.co.th/files/nginx/report.json')
 data = response.json()
@@ -112,7 +115,7 @@ for ax in axes:
     ax.grid(False)
     
 plt.tight_layout(rect=[0.05, 0.05, 0.95, 0.95])
-plt.savefig("./NginX/Image/nginx_img1.png")
+plt.savefig(f"./sections/NginX/Image/{month}_{year}_topcountry.png")
 # plt.show()
 
 
@@ -200,7 +203,7 @@ for ax in axes:
     ax.grid(False)
     
 plt.tight_layout(rect=[0.05, 0.05, 0.95, 0.95])
-plt.savefig("./NginX/Image/nginx_img2.png")
+plt.savefig(f"./sections/NginX/Image/{month}_{year}_criticalip.png")
 # plt.show()
 
 df_ge=pd.DataFrame(dataframe['general'])
@@ -288,89 +291,103 @@ plt.tight_layout(rect=[0, 0, 1, 1])
 plt.margins(x=0.3)
 
 # บันทึกรูปภาพ
-plt.savefig("./NginX/Image/nginx_img3.png")
+plt.savefig(f"./sections/NginX/Image/{month}_{year}_avgrate.png")
 
 # แสดงกราฟ
 # plt.show()
 
-doc = Document("./NginX/nginx Template.docx")
+# doc = Document("./Template/nginx Template.docx")
 
 
-def replace_text_in_table( old_text, new_text):
-    for table in doc.tables:
-        for row in table.rows:
-            for cell in row.cells:
-                if old_text in cell.text:
-                    for paragraph in cell.paragraphs:
-                        for run in paragraph.runs:
-                            run.font.name = 'Sarabun'
-                            run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Sarabun')
-                            run.font.size = Pt(28)
-                    cell.text = cell.text.replace(old_text, new_text)
-                    for paragraph in cell.paragraphs:
-                        for run in paragraph.runs:
-                            run.font.name = 'Sarabun'
-                            run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Sarabun')
-                            run.font.size = Pt(28)
+# def replace_text_in_table( old_text, new_text):
+#     for table in doc.tables:
+#         for row in table.rows:
+#             for cell in row.cells:
+#                 if old_text in cell.text:
+#                     for paragraph in cell.paragraphs:
+#                         for run in paragraph.runs:
+#                             run.font.name = 'Sarabun'
+#                             run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Sarabun')
+#                             run.font.size = Pt(28)
+#                     cell.text = cell.text.replace(old_text, new_text)
+#                     for paragraph in cell.paragraphs:
+#                         for run in paragraph.runs:
+#                             run.font.name = 'Sarabun'
+#                             run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Sarabun')
+#                             run.font.size = Pt(28)
 
-replace_text_in_table('<total_requsets>', str(total_requests))
-replace_text_in_table('<valid>', str(valid))
-replace_text_in_table('<failed>', str(failed))
+# replace_text_in_table('<total_requsets>', str(total_requests))
+# replace_text_in_table('<valid>', str(valid))
+# replace_text_in_table('<failed>', str(failed))
 
-def replace_text_in_text(old_text, new_text, doc):
-    for paragraph in doc.paragraphs:
-        if old_text in paragraph.text:
-            for run in paragraph.runs:
-                run.font.name = 'Sarabun'
-                run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Sarabun')
-                run.font.size = Pt(8)
+# def replace_text_in_text(old_text, new_text, doc):
+#     for paragraph in doc.paragraphs:
+#         if old_text in paragraph.text:
+#             for run in paragraph.runs:
+#                 run.font.name = 'Sarabun'
+#                 run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Sarabun')
+#                 run.font.size = Pt(8)
 
-            # Check if new_text is not empty before replacing
-            if new_text:
-                paragraph.text = paragraph.text.replace(old_text, new_text)
-                for run in paragraph.runs:
-                    run.font.name = 'Sarabun'
-                    run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Sarabun')
-                    run.font.size = Pt(8)
+#             # Check if new_text is not empty before replacing
+#             if new_text:
+#                 paragraph.text = paragraph.text.replace(old_text, new_text)
+#                 for run in paragraph.runs:
+#                     run.font.name = 'Sarabun'
+#                     run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Sarabun')
+#                     run.font.size = Pt(8)
 
 # Example usage:
 # doc = Document()  # Assuming you have a Document object
-replace_text_in_text('<avg_hits>', str(avg_hits), doc)
+# replace_text_in_text('<avg_hits>', str(avg_hits), doc)
 
 
-tables = doc.tables
-# ใส่ข้อมูลและรูปภาพใน table2
-p = tables[0].rows[1].cells[0].add_paragraph()
-r = p.add_run(style=None)
-r.add_text(str(total_requests))
-r.font.name = 'Sarabun'
-r.font.size = Pt(24)
-p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # จัดให้ข้อความอยู่ตรงกลาง
+# tables = doc.tables
+# # ใส่ข้อมูลและรูปภาพใน table2
+# p = tables[0].rows[1].cells[0].add_paragraph()
+# r = p.add_run(style=None)
+# r.add_text(str(total_requests))
+# r.font.name = 'Sarabun'
+# r.font.size = Pt(24)
+# p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # จัดให้ข้อความอยู่ตรงกลาง
 
-p = tables[0].rows[1].cells[2].add_paragraph()
-r = p.add_run(style=None)
-r.add_text(str(valid))
-r.font.name = 'Sarabun'
-r.font.size = Pt(24)
-p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # จัดให้ข้อความอยู่ตรงกลาง
+# p = tables[0].rows[1].cells[2].add_paragraph()
+# r = p.add_run(style=None)
+# r.add_text(str(valid))
+# r.font.name = 'Sarabun'
+# r.font.size = Pt(24)
+# p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # จัดให้ข้อความอยู่ตรงกลาง
 
-p = tables[0].rows[1].cells[4].add_paragraph()
-r = p.add_run(style=None)
-r.add_text(str(failed))
-r.font.name = 'Sarabun'
-r.font.size = Pt(24)
-p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # จัดให้ข้อความอยู่ตรงกลาง
+# p = tables[0].rows[1].cells[4].add_paragraph()
+# r = p.add_run(style=None)
+# r.add_text(str(failed))
+# r.font.name = 'Sarabun'
+# r.font.size = Pt(24)
+# p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # จัดให้ข้อความอยู่ตรงกลาง
 
-p = tables[1].rows[0].cells[0].paragraphs[0]
-r = p.add_run(style=None)
-r.add_picture('./NginX/Image/nginx_img2.png', width=Cm(20))
+# p = tables[1].rows[0].cells[0].paragraphs[0]
+# r = p.add_run(style=None)
+# r.add_picture(f'./NginX/Image/{month}_{year}_criticalip.png', width=Cm(20))
 
-p = tables[2].rows[0].cells[0].paragraphs[0]
-r = p.add_run(style=None)
-r.add_picture('./NginX/Image/nginx_img1.png', width=Cm(20))
+# p = tables[2].rows[0].cells[0].paragraphs[0]
+# r = p.add_run(style=None)
+# r.add_picture(f'./NginX/Image/{month}_{year}_topcountry.png', width=Cm(20))
 
-p = tables[3].rows[0].cells[0].paragraphs[0]
-r = p.add_run(style=None)
-r.add_picture('./NginX/Image/nginx_img3.png', width=Cm(15))
+# p = tables[3].rows[0].cells[0].paragraphs[0]
+# r = p.add_run(style=None)
+# r.add_picture(f'./NginX/Image/{month}_{year}_avgrate.png', width=Cm(15))
 
-doc.save('./Allpart/Nginx_edit.docx')
+
+context = {
+'avg_hit' : str(avg_hits),
+'total_requsets' : str(total_requests),
+'valid' : str(valid),
+'failed' : str(failed)
+
+}
+
+def nginx() :
+    # print(context)
+    return context
+
+
+# doc.save(f'./Docxfile/{month}_{year}/Nginx_edit.docx')

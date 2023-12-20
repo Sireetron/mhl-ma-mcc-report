@@ -115,7 +115,7 @@ for ax in axes:
     ax.grid(False)
     
 plt.tight_layout(rect=[0.05, 0.05, 0.95, 0.95])
-plt.savefig(f"./sections/NginX/Image/{month}_{year}_topcountry.png")
+plt.savefig(f"./sections/NginX/Image/topcountry.png")
 # plt.show()
 
 
@@ -203,7 +203,7 @@ for ax in axes:
     ax.grid(False)
     
 plt.tight_layout(rect=[0.05, 0.05, 0.95, 0.95])
-plt.savefig(f"./sections/NginX/Image/{month}_{year}_criticalip.png")
+plt.savefig(f"./sections/NginX/Image/criticalip.png")
 # plt.show()
 
 df_ge=pd.DataFrame(dataframe['general'])
@@ -291,7 +291,7 @@ plt.tight_layout(rect=[0, 0, 1, 1])
 plt.margins(x=0.3)
 
 # บันทึกรูปภาพ
-plt.savefig(f"./sections/NginX/Image/{month}_{year}_avgrate.png")
+plt.savefig(f"./sections/NginX/Image/avgrate.png")
 
 # แสดงกราฟ
 # plt.show()

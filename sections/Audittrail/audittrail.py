@@ -237,7 +237,7 @@ fig.update_layout(
 
 # Show figure
 # fig.show()
-fig.write_image(f"./sections/Audittrail/Image/{month}_{year}_image.png")
+fig.write_image(f"./sections/Audittrail/Image/image.png")
 
 dataip=datauniq['ip_address'].count()
 datalogin= dataselected['user.title.objectId'].count()

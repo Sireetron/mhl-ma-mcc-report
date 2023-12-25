@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[35]:
+# In[1]:
 
 
 from bs4 import BeautifulSoup
@@ -9,14 +9,16 @@ from bs4 import BeautifulSoup
 
 # ## Queries
 
-# In[37]:
+# In[2]:
+
 
 import os
 
 os.system("pip install python-dotenv")
 
 
-# In[38]:
+# In[3]:
+
 
 import sys
 sys.path.append(os.path.abspath('../'))
@@ -24,7 +26,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-# In[39]:
+# In[4]:
 
 
 # from urllib.request import urlopen
@@ -43,14 +45,14 @@ load_dotenv()
 # print(queries_.prettify())
 
 
-# In[40]:
+# In[5]:
 
 
 file_queries = os.getenv('REPORT_SERVICE')+"database/report/2311"
 print(file_queries)
 
 
-# In[41]:
+# In[6]:
 
 
 from urllib.request import urlopen
@@ -67,21 +69,21 @@ queries_ = BeautifulSoup(html_content, 'html.parser')
 print(queries_.prettify())
 
 
-# In[42]:
+# In[7]:
 
 
 tabbable = queries_.find('div', {'class': 'tabbable'})
 tabbable
 
 
-# In[43]:
+# In[8]:
 
 
 tab_content1 = tabbable.find('div', {'class': 'tab-content'})
 tab_content1
 
 
-# In[44]:
+# In[9]:
 
 
 element = tab_content1.find('div', {'class': 'tab-pane active', 'id': 'tab-queries'})
@@ -91,7 +93,7 @@ element = '"""'+ str(element) + '"""'
 element
 
 
-# In[45]:
+# In[10]:
 
 
 # Parse the HTML content
@@ -103,7 +105,7 @@ text_content = soup.get_text(strip=True, separator='\n')
 print(text_content)
 
 
-# In[46]:
+# In[11]:
 
 
 # Parse the HTML content
@@ -134,14 +136,14 @@ print("Queries per second:", queries_per_second)
 
 # ## Queries by type
 
-# In[47]:
+# In[12]:
 
 
 file_type = os.getenv('REPORT_SERVICE')+"database/report/2311#queries-by-type"
 print(file_type)
 
 
-# In[48]:
+# In[13]:
 
 
 # Open the file using urlopen
@@ -156,7 +158,7 @@ type = BeautifulSoup(html, 'html.parser')
 print(type.prettify())
 
 
-# In[49]:
+# In[14]:
 
 
 # from urllib.request import urlopen
@@ -176,21 +178,21 @@ print(type.prettify())
 # print(type.prettify())
 
 
-# In[50]:
+# In[15]:
 
 
 analy = type.find('div', {'class': 'analysis-item row', 'id': 'queries-by-type'})
 analy
 
 
-# In[51]:
+# In[16]:
 
 
 tab_content2 = analy.find('div', {'class': 'tab-content'})
 tab_content2
 
 
-# In[52]:
+# In[17]:
 
 
 element2 = tab_content2.find('script', {'type': 'text/javascript'})
@@ -201,7 +203,7 @@ element2 = '"""'+ str(element2) + '"""'
 element2
 
 
-# In[53]:
+# In[18]:
 
 
 import re
@@ -216,13 +218,13 @@ if match:
     my_list_of_lists = ast.literal_eval(f"[{extracted_list_str}]")
 
 
-# In[54]:
+# In[19]:
 
 
 my_list_of_lists
 
 
-# In[55]:
+# In[20]:
 
 
 import matplotlib.pyplot as plt
@@ -240,7 +242,7 @@ plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 plt.show()
 
 
-# In[56]:
+# In[21]:
 
 
 import numpy as np
@@ -291,7 +293,7 @@ plt.title('Queries by Type', loc='left', fontsize=20, weight='bold', color="#9B9
 plt.show()
 
 
-# In[57]:
+# In[22]:
 
 
 import numpy as np
@@ -346,14 +348,14 @@ plt.show()
 
 # ## Disk Space
 
-# In[58]:
+# In[23]:
 
 
 file_disk_space= os.getenv('REPORT_SERVICE')+"database/size"
 print(file_disk_space)
 
 
-# In[59]:
+# In[24]:
 
 
 import json
@@ -368,7 +370,7 @@ json_data
 
 # ## Disk Space Leakage
 
-# In[60]:
+# In[25]:
 
 
 # Extract the first item from the array
@@ -376,7 +378,7 @@ df_disk_space_leakage = json_data[0]
 df_disk_space_leakage
 
 
-# In[61]:
+# In[26]:
 
 
 # Access individual values and assign them to variables
@@ -399,7 +401,7 @@ print("total_table_size:", total_table_size_space_leakage)
 print("total_index_size:", total_index_size_space_leakage)
 
 
-# In[62]:
+# In[27]:
 
 
 # Convert to Megabyte
@@ -408,7 +410,7 @@ total_database_size_space_leakage_mb = round(total_database_size_space_leakage /
 print("total database size in MB:", total_database_size_space_leakage_mb)
 
 
-# In[63]:
+# In[28]:
 
 
 # Assuming you have calculated these percentages
@@ -440,7 +442,7 @@ fig.savefig('disk_space_leakage_chart_image.png', bbox_inches='tight')
 
 # ##  Disk Space Salinity
 
-# In[64]:
+# In[29]:
 
 
 # Extract the second item from the array
@@ -448,7 +450,7 @@ df_disk_space_salinity = json_data[1]
 df_disk_space_salinity
 
 
-# In[65]:
+# In[30]:
 
 
 # Access individual values and assign them to variables
@@ -471,16 +473,16 @@ print("total_table_size:", total_table_size_space_salinity)
 print("total_index_size:", total_index_size_space_salinity)
 
 
-# In[66]:
+# In[ ]:
 
 
 # Convert to Megabyte
-total_database_size_space_leakage_mb = round(total_database_size_space_salinity / (1024 * 1024), 4)
+total_database_size_space_salinity_mb = round(total_database_size_space_salinity / (1024 * 1024), 4)
 
-print("total database size in MB:", total_database_size_space_leakage_mb)
+print("total database size in MB:", total_database_size_space_salinity_mb)
 
 
-# In[67]:
+# In[32]:
 
 
 # Assuming you have calculated these percentages
@@ -510,22 +512,19 @@ plt.show()
 fig.savefig('disk_space_salinity_chart_image.png', bbox_inches='tight')
 
 
-
-# image disk_space_salinity_chart_image.pngs
-
-
-#writing data in each table
+# writing data in each table
 # doc = DocxTemplate
 context = {
-    'total_database_size_space_leakage_mb': 'total_database_size_space_leakage_mb',
-    'total_database_size_space_salinity_mb': 'total_database_size_space_leakage_mb',
-    'num_unique_queries': 'total_database_size_space_leakage_mb',
-    'num_queries': 'total_database_size_space_leakage_mb',
-    'queries_per_second': 'total_database_size_space_leakage_mb',
-    'queries_by_type_image.png': queries_by_type_image.png,
-    'disk_space_leakage_chart_image.png': disk_space_leakage_chart_image.png,
-    'disk_space_salinity_chart_image.png': disk_space_salinity_chart_image.png
+    'num_unique_queries': num_unique_queries,
+    'num_queries': num_queries,
+    'queries_per_second': queries_per_second,
+    'total_database_size_space_leakage_mb': total_database_size_space_leakage_mb,
+    'total_database_size_space_salinity_mb': total_database_size_space_salinity_mb,
+    'queries_by_type_image.png': 'queries_by_type_image.png',
+    'disk_space_leakage_chart_image.png': 'disk_space_leakage_chart_image.png',
+    'disk_space_salinity_chart_image.png': 'disk_space_salinity_chart_image.png'
     }
+
 
 def auditrail() :
     # print(context)

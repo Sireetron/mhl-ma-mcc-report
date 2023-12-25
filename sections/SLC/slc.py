@@ -221,7 +221,7 @@ card_3.update_layout(
     ],
                 )
 # card_3.show()
-# card_3.write_image("./Image")
+# card_3.write_image("./Image")/Users/mh-air/Desktop/fhon/python/mhl-ma-report/sections/SLC/Image
 pio.write_image(card_3,f'./sections/SLC/Image/inprogress.png', format='png')
 
 
@@ -248,9 +248,9 @@ context = {
     'allticket' : f'{total_slc}  งาน'
 
     }
+print(context)
 # doc.render(context)
 # doc.save(f'./Docxfile/{month}_{year}/SLC_edit.docx')
 
 def slc() :
-    # print(context)
     return context

@@ -235,9 +235,10 @@ fig.update_layout(
     )
 )
 
-# Show figure
+# Show figure/Users/mh-air/Desktop/fhon/python/mhl-ma-report/sections/Audittrail/Image
 # fig.show()
-fig.write_image(f"./sections/Audittrail/Image/image.png")
+fig.write_image(f'./sections/Audittrail/Image/image.png')
+
 
 dataip=datauniq['ip_address'].count()
 datalogin= dataselected['user.title.objectId'].count()
@@ -253,9 +254,9 @@ context = {
     # 'audittail-image':InlineImage(doc,f"./Audittrail/Image/{month}_{year}_image.png",width=Cm(16)),
 
     }
+print(context)
 # doc.render(context)
 # doc.save(f'./Docxfile/{month}_{year}/Audittrail_edit.docx')
-
+ 
 def auditrail() :
-    # print(context)
     return context

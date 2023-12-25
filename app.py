@@ -26,7 +26,7 @@ day = datetime.now().day
 
 def main():
     # add_font()
-    doc = DocxTemplate("./sections/Template/Template.docx")
+    doc = DocxTemplate("./sections/Template/Template copy 2.docx")
     # my_path='/Users/mh-air/Desktop/fhon/python/mhl-ma-report/sections/Templateall.docx'
     # c = canvas.Canvas(my_path,bottomup=0)
     # draw_first_page(c)
@@ -37,7 +37,8 @@ def main():
         'nginx_image1': InlineImage(doc, f"./sections/NginX/Image/criticalip.png", width=Cm(16)),
         'nginx_image2': InlineImage(doc, f"./sections/NginX/Image/topcountry.png", width=Cm(16)),
         'nginx_image3': InlineImage(doc, f"./sections/NginX/Image/avgrate.png", width=Cm(16))
-        }
+    } 
+  
     # print(merged_bio)
     # c.showPage() # saves current page
     # c.save()

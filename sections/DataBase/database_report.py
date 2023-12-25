@@ -509,3 +509,24 @@ plt.show()
 # Save the plot
 fig.savefig('disk_space_salinity_chart_image.png', bbox_inches='tight')
 
+
+
+# image disk_space_salinity_chart_image.pngs
+
+
+#writing data in each table
+# doc = DocxTemplate
+context = {
+    'total_database_size_space_leakage_mb': 'total_database_size_space_leakage_mb',
+    'total_database_size_space_salinity_mb': 'total_database_size_space_leakage_mb',
+    'num_unique_queries': 'total_database_size_space_leakage_mb',
+    'num_queries': 'total_database_size_space_leakage_mb',
+    'queries_per_second': 'total_database_size_space_leakage_mb',
+    'queries_by_type_image.png': queries_by_type_image.png,
+    'disk_space_leakage_chart_image.png': disk_space_leakage_chart_image.png,
+    'disk_space_salinity_chart_image.png': disk_space_salinity_chart_image.png
+    }
+
+def auditrail() :
+    # print(context)
+    return context

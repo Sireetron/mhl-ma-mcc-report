@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[35]:
 
 
 from bs4 import BeautifulSoup
@@ -9,43 +9,22 @@ from bs4 import BeautifulSoup
 
 # ## Queries
 
-# In[2]:
-
-
-# from urllib.request import urlopen
-
-# # Specify the file path
-# file_queries = 'file:///D:/maholan/mwa/out.html'
-
-# # Open the file using urlopen
-# with urlopen(file_queries) as file:
-#     # Read the HTML content from the file
-#     html_content = file.read().decode('utf-8')
-
-# # Parse the HTML using BeautifulSoup
-# queries_ = BeautifulSoup(html_content, 'html.parser')
-
-# # Print the prettified HTML
-# print(queries_.prettify())
-
-
-# In[3]:
+# In[37]:
 
 import os
 
 os.system("pip install python-dotenv")
 
-# In[4]:
 
+# In[38]:
 
-import os
 import sys
 sys.path.append(os.path.abspath('../'))
 from dotenv import load_dotenv
 load_dotenv()
 
 
-# In[5]:
+# In[39]:
 
 
 # from urllib.request import urlopen
@@ -64,14 +43,14 @@ load_dotenv()
 # print(queries_.prettify())
 
 
-# In[6]:
+# In[40]:
 
 
 file_queries = os.getenv('REPORT_SERVICE')+"database/report/2311"
 print(file_queries)
 
 
-# In[7]:
+# In[41]:
 
 
 from urllib.request import urlopen
@@ -88,21 +67,21 @@ queries_ = BeautifulSoup(html_content, 'html.parser')
 print(queries_.prettify())
 
 
-# In[8]:
+# In[42]:
 
 
 tabbable = queries_.find('div', {'class': 'tabbable'})
 tabbable
 
 
-# In[9]:
+# In[43]:
 
 
 tab_content1 = tabbable.find('div', {'class': 'tab-content'})
 tab_content1
 
 
-# In[10]:
+# In[44]:
 
 
 element = tab_content1.find('div', {'class': 'tab-pane active', 'id': 'tab-queries'})
@@ -112,7 +91,7 @@ element = '"""'+ str(element) + '"""'
 element
 
 
-# In[11]:
+# In[45]:
 
 
 # Parse the HTML content
@@ -124,7 +103,7 @@ text_content = soup.get_text(strip=True, separator='\n')
 print(text_content)
 
 
-# In[12]:
+# In[46]:
 
 
 # Parse the HTML content
@@ -155,14 +134,14 @@ print("Queries per second:", queries_per_second)
 
 # ## Queries by type
 
-# In[13]:
+# In[47]:
 
 
 file_type = os.getenv('REPORT_SERVICE')+"database/report/2311#queries-by-type"
 print(file_type)
 
 
-# In[14]:
+# In[48]:
 
 
 # Open the file using urlopen
@@ -177,7 +156,7 @@ type = BeautifulSoup(html, 'html.parser')
 print(type.prettify())
 
 
-# In[15]:
+# In[49]:
 
 
 # from urllib.request import urlopen
@@ -197,21 +176,21 @@ print(type.prettify())
 # print(type.prettify())
 
 
-# In[16]:
+# In[50]:
 
 
 analy = type.find('div', {'class': 'analysis-item row', 'id': 'queries-by-type'})
 analy
 
 
-# In[17]:
+# In[51]:
 
 
 tab_content2 = analy.find('div', {'class': 'tab-content'})
 tab_content2
 
 
-# In[18]:
+# In[52]:
 
 
 element2 = tab_content2.find('script', {'type': 'text/javascript'})
@@ -222,7 +201,7 @@ element2 = '"""'+ str(element2) + '"""'
 element2
 
 
-# In[19]:
+# In[53]:
 
 
 import re
@@ -237,13 +216,13 @@ if match:
     my_list_of_lists = ast.literal_eval(f"[{extracted_list_str}]")
 
 
-# In[20]:
+# In[54]:
 
 
 my_list_of_lists
 
 
-# In[21]:
+# In[55]:
 
 
 import matplotlib.pyplot as plt
@@ -261,7 +240,7 @@ plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 plt.show()
 
 
-# In[22]:
+# In[56]:
 
 
 import numpy as np
@@ -312,7 +291,7 @@ plt.title('Queries by Type', loc='left', fontsize=20, weight='bold', color="#9B9
 plt.show()
 
 
-# In[23]:
+# In[57]:
 
 
 import numpy as np
@@ -367,14 +346,14 @@ plt.show()
 
 # ## Disk Space
 
-# In[24]:
+# In[58]:
 
 
 file_disk_space= os.getenv('REPORT_SERVICE')+"database/size"
 print(file_disk_space)
 
 
-# In[25]:
+# In[59]:
 
 
 import json
@@ -389,7 +368,7 @@ json_data
 
 # ## Disk Space Leakage
 
-# In[26]:
+# In[60]:
 
 
 # Extract the first item from the array
@@ -397,7 +376,7 @@ df_disk_space_leakage = json_data[0]
 df_disk_space_leakage
 
 
-# In[27]:
+# In[61]:
 
 
 # Access individual values and assign them to variables
@@ -420,7 +399,7 @@ print("total_table_size:", total_table_size_space_leakage)
 print("total_index_size:", total_index_size_space_leakage)
 
 
-# In[28]:
+# In[62]:
 
 
 # Convert to Megabyte
@@ -429,7 +408,7 @@ total_database_size_space_leakage_mb = round(total_database_size_space_leakage /
 print("total database size in MB:", total_database_size_space_leakage_mb)
 
 
-# In[29]:
+# In[63]:
 
 
 # Assuming you have calculated these percentages
@@ -461,7 +440,7 @@ fig.savefig('disk_space_leakage_chart_image.png', bbox_inches='tight')
 
 # ##  Disk Space Salinity
 
-# In[30]:
+# In[64]:
 
 
 # Extract the second item from the array
@@ -469,7 +448,7 @@ df_disk_space_salinity = json_data[1]
 df_disk_space_salinity
 
 
-# In[31]:
+# In[65]:
 
 
 # Access individual values and assign them to variables
@@ -492,7 +471,7 @@ print("total_table_size:", total_table_size_space_salinity)
 print("total_index_size:", total_index_size_space_salinity)
 
 
-# In[32]:
+# In[66]:
 
 
 # Convert to Megabyte
@@ -501,7 +480,7 @@ total_database_size_space_leakage_mb = round(total_database_size_space_salinity 
 print("total database size in MB:", total_database_size_space_leakage_mb)
 
 
-# In[33]:
+# In[67]:
 
 
 # Assuming you have calculated these percentages
@@ -529,3 +508,4 @@ plt.show()
 
 # Save the plot
 fig.savefig('disk_space_salinity_chart_image.png', bbox_inches='tight')
+

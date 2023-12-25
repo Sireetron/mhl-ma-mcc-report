@@ -52,7 +52,7 @@ from datetime import datetime
 # Returns the current local date
 today = date.today()
 print("Today date is: ", today)
-month = datetime.now().month -1
+month = datetime.now().month  -1
 year = datetime.now().year
 day =  datetime.now().day
  
@@ -84,17 +84,17 @@ dataprep = pd.json_normalize(data,'comments',['ticket_type_id','title','last_act
 dataprep['create_at_month'] = pd.to_datetime(dataprep['created_at']).dt.month
 dataprep['create_at_year'] = pd.to_datetime(dataprep['created_at']).dt.year
 dataprep_fil = dataprep.merge(df_with_start, left_on='title', right_on='title')
-dataprep_fil
+# dataprep_fil
 datafil = dataprep_fil[['label_x','id_y','created_at','description','ticket_type_id_x','title','last_activity_at_x','status_x','assigned_to_x','create_at_month','create_at_year','closed_at_x','created_date']]
 datafil = datafil.loc[datafil['label_x'].isnull()]
-datafil
+# datafil
 
 
 #get ticket at focus comment
 datafil.loc[datafil['status_x'] == 'open' ].groupby('title').first()
 ticket_fil = pd.concat([datafil.loc[datafil['status_x'] == 'closed' ].groupby('title', group_keys=False).last(),datafil.loc[datafil['status_x'] == 'open' ].groupby('title', group_keys=False).first()]).reset_index()
 data_inmonth = (ticket_fil.loc[((ticket_fil['create_at_month'] == month) & (ticket_fil['create_at_year']== year)) | ((ticket_fil['status_x'] == 'open') & (ticket_fil['create_at_month'] <= month) & (ticket_fil['create_at_year']== year)) ]) #filter
-print('ddd',data_inmonth)
+# print('ddd',data_inmonth)
 
 #chage str to date time for calculating work duration
 data_inmonth['created_date_ex']  = data_inmonth['created_date'].apply(lambda x: datetime.strptime(x, "%d/%m/%Y %H:%M"))
@@ -102,7 +102,7 @@ data_inmonth['last_activity_at_x_ex']  = data_inmonth['last_activity_at_x'].appl
 data_inmonth['created_date_ex'] = data_inmonth['created_date_ex'].apply(lambda x: x.replace(year=year))
 data_inmonth['last_activity_at_x_ex'] = data_inmonth['last_activity_at_x_ex'].apply(lambda x: x.replace(year=year))
 data_inmonth['duration'] = data_inmonth['last_activity_at_x_ex']-data_inmonth['created_date_ex']
-data_inmonth
+# data_inmonth
 
 
 #lookup typeticket 
@@ -125,24 +125,25 @@ dataallticket['success'] = dataallticket['success'].astype(str).replace('nan','0
 dataallticket['open'] = dataallticket['open'].astype(str).replace('nan','0')
 dataallticket['duration'] = dataallticket['duration'].astype(str).replace('NaT','0')
 dataallticket['duration'] = dataallticket['duration'].astype(str).apply(lambda x: x.replace('days','วัน'))
-dataallticket
+# dataallticket
 
 # summarize data to table2
 datasuccess = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'closed'].sort_values('id_y').reset_index()
 datasuccess['duration'] = datasuccess['duration'].astype(str).apply(lambda x: x.replace('days','วัน'))
-datasuccess 
+# datasuccess 
 
 # summarize data to table2
 dataop = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'open'].sort_values('id_y').reset_index()
 dataop['duration'] = dataop['duration'].astype(str).apply(lambda x: x.replace('days','วัน'))
-dataop
+dataop['remain'] = 90 - dataop['duration'].apply(lambda x: x.split()[0].replace('วัน', '')).astype(int)
+# dataop
 
 #get date to table header
 thaiyear = int(year)+543
 alldate = _TH_FULL_MONTHS[month-1] + " "+str(thaiyear)
-alldate
+# alldate
 alldateandday = str(day) + " " + _TH_FULL_MONTHS[month] + " "+str(thaiyear)
-alldateandday
+# alldateandday
 
 
 #get amount of allticket in month
@@ -187,7 +188,10 @@ card_2.update_layout(
 
 # card_2.show()
 # card_2.write_image("./Image")
-pio.write_image(card_2,f'./sections/SLC/Image/{month}_{year}_success.png', format='png')
+pio.write_image(card_2,f'./sections/SLC/Image/success.png', format='png')
+
+
+# Use `hole` to create a donut-like pie chart
 
 #creating chart for in-progress work
 labels = ['success','operate']
@@ -218,12 +222,12 @@ card_3.update_layout(
                 )
 # card_3.show()
 # card_3.write_image("./Image")
-pio.write_image(card_3,f'./sections/SLC/Image/{month}_{year}_inprogress.png', format='png')
+pio.write_image(card_3,f'./sections/SLC/Image/inprogress.png', format='png')
 
 
 #writing data in each table
-from docxtpl import DocxTemplate,InlineImage
-doc = DocxTemplate("./Template/SLC_template.docx")
+# from docxtpl import DocxTemplate,InlineImage
+# doc = DocxTemplate("./Template/SLC_template.docx")
 deps =  dataallticket['title_y'].unique()
 base_jsonall = dataallticket.to_dict('records')
 base_jsonsuccess = datasuccess.to_dict('records')

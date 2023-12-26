@@ -520,10 +520,14 @@ context = {
     'queries_per_second': queries_per_second,
     'total_database_size_space_leakage_mb': total_database_size_space_leakage_mb,
     'total_database_size_space_salinity_mb': total_database_size_space_salinity_mb,
-    'queries_by_type_image.png': 'queries_by_type_image.png',
-    'disk_space_leakage_chart_image.png': 'disk_space_leakage_chart_image.png',
-    'disk_space_salinity_chart_image.png': 'disk_space_salinity_chart_image.png'
+    'queries_by_type_image': InlineImage(doc,f".D:/maholan/mwa_html/pull_html/mhl-ma-report/sections/DataBase/queries_by_type_image.png"),
+    'disk_space_leakage_chart_image': InlineImage(doc,f".D:/maholan/mwa_html/pull_html/mhl-ma-report/sections/DataBase/disk_space_leakage_chart_image.png"),
+    'disk_space_salinity_chart_image': InlineImage(doc,f".D:/maholan/mwa_html/pull_html/mhl-ma-report/sections/DataBase/disk_space_salinity_chart_image.png")
     }
+
+
+# doc.render(context)
+# doc.save(f'./Docxfile/{month}_{year}/Audittrail_edit.docx')
 
 
 def auditrail() :

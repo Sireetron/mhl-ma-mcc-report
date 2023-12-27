@@ -31,6 +31,8 @@ def main():
     # c = canvas.Canvas(my_path,bottomup=0)
     # draw_first_page(c)
     merged_bio = iot() | nginx() | auditrail() | slc() | {
+        'month': month,
+        'year' : year,
         'slc_image1': InlineImage(doc, f"./sections/SLC/Image/success.png", width=Cm(5)), 
         'slc_image2': InlineImage(doc, f"./sections/SLC/Image/inprogress.png", width=Cm(5)), 
         'audittrail_image': InlineImage(doc, f"./sections/Audittrail/Image/image.png", width=Cm(16)),

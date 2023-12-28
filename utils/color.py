@@ -38,6 +38,17 @@ dark_red = '#cc1a01'
 
 soft_red=' #f5cccc'
 
+### Device by main OS
+
+centos = '#9fc5e8'
+
+ubuntu_18 =  '#6d9eeb'
+
+ubuntu_20 = '#8e7cc3'
+
+debian_11 = '#46bdc6'
+
+windows_2019 = '#76a5af'
 
 def set_background_color(c,color=main_blue):
     c.setFillColor(color)

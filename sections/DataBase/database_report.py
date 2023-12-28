@@ -443,6 +443,7 @@ for df_disk_space in json_data:
 
     # Append the values to disk_space list
     disk_space.append({
+        'desc_space' : desc_space,
         'total_database_size_mb': total_database_size_space_mb, 
         'image_disk_space': image_disk_space
     })
@@ -452,6 +453,7 @@ print(disk_space)
 
 
 # In[27]:
+
 
 from docxtpl import DocxTemplate,InlineImage
 

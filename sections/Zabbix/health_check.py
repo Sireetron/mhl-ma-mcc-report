@@ -63,10 +63,10 @@ status
 
 
 # Replace 'path/to/your/image.jpg' with the actual path to your image file
-# image_pass =  './sections/Zabbix/Image/pass.png'
-# image_not_pass =  './sections/Zabbix/Image/not_pass.png'
-image_pass = 'C:/Users/jdpsk/OneDrive/Desktop/ST/report_water/Image/pass.png'
-image_not_pass = 'C:/Users/jdpsk/OneDrive/Desktop/ST/report_water/Image/not_pass.png'
+image_pass =  './sections/Zabbix/Image/pass.png'
+image_not_pass =  './sections/Zabbix/Image/not_pass.png'
+# image_pass = 'C:/Users/jdpsk/OneDrive/Desktop/ST/report_water/Image/pass.png'
+# image_not_pass = 'C:/Users/jdpsk/OneDrive/Desktop/ST/report_water/Image/not_pass.png'
 
 # Open the image using Pillow
 img_pass = Image.open(image_pass)
@@ -99,10 +99,10 @@ plt.show()
 
 
 # Replace 'path/to/your/image.jpg' with the actual path to your image file
-# image_pass =  './sections/Zabbix/Image/pass.png'
-# image_not_pass =  './sections/Zabbix/Image/not_pass.png'
-image_pass = 'C:/Users/jdpsk/OneDrive/Desktop/ST/report_water/Image/pass.png'
-image_not_pass = 'C:/Users/jdpsk/OneDrive/Desktop/ST/report_water/Image/not_pass.png'
+image_pass =  './sections/Zabbix/Image/pass.png'
+image_not_pass =  './sections/Zabbix/Image/not_pass.png'
+# image_pass = 'C:/Users/jdpsk/OneDrive/Desktop/ST/report_water/Image/pass.png'
+# image_not_pass = 'C:/Users/jdpsk/OneDrive/Desktop/ST/report_water/Image/not_pass.png'
 
 # Open the image using Pillow
 img_pass = Image.open(image_pass)

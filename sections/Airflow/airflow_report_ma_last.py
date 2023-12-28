@@ -38,10 +38,22 @@ month = datetime.now().month -1
 year = datetime.now().year
 api_params = {'month': '09', 'year': '2023'}
 
+def get_first_and_last_day_of_month(year, month):
+    first_day = datetime(year, month, 1)
+    last_day = datetime(year, month + 1, 1) - timedelta(days=1)
+    
+    return first_day.strftime('%Y-%m-%d'), last_day.strftime('%Y-%m-%d')
+
+# Example for September 2023
+first_day, last_day = get_first_and_last_day_of_month(year, month)
+
+
+
+
 
 plt.rcParams['font.family'] = 'Tahoma'
 # Assume 'API_URL_GET_JOB_CALENDAR' and 'AUTH_TOKEN' are defined in your .env file
-api_url_get_job_calendar = os.getenv('REPORT_SERVICE')+"get_job_calendar"
+api_url_get_job_calendar = os.getenv('REPORT_SERVICE')+"airflow/get_job_calendar"
 auth_token = os.getenv('AUTH_TOKEN')
 try:
     # Fetch data from the API with authentication
@@ -75,7 +87,7 @@ except Exception as error:
 
 
 # Assuming df is your DataFra
-dates = date_range('2023-09-01', '2023-09-30')
+dates = date_range(first_day, last_day)
 data = df[df['Execution Date'].dt.month == month]["Percent Success"]
 print(data)
 
@@ -153,7 +165,7 @@ def query_api_for_job_scheduler(API_URL_JOB_SCHEDULER, token):
         return None
 
 # Example API URL and token
-API_URL_JOB_SCHEDULER = os.getenv('REPORT_SERVICE')+"job_scheduler"
+API_URL_JOB_SCHEDULER = os.getenv('REPORT_SERVICE')+"airflow/job_scheduler"
 
 auth_token = os.getenv('AUTH_TOKEN')
 headers = {'Authorization': f'Bearer {auth_token}'}
@@ -302,7 +314,7 @@ plt.rcParams['font.family'] = 'Tahoma'
 # %%
 def query_dag_system():
     # Set the API URL and header
-    API_URL_JOB_SYSTEM= os.getenv('REPORT_SERVICE')+"job_system"
+    API_URL_JOB_SYSTEM= os.getenv('REPORT_SERVICE')+"airflow/job_system"
     auth_token = os.getenv('AUTH_TOKEN')
 
     try:
@@ -391,7 +403,7 @@ plt.savefig(img_path,bbox_inches='tight')
 load_dotenv()
 
 # Define the API endpoint and parameters
-API_URL_TOP5_ETL_FAIL = os.getenv('REPORT_SERVICE')+"top5_etl_fail"
+API_URL_TOP5_ETL_FAIL = os.getenv('REPORT_SERVICE')+"airflow/top5_etl_fail"
 auth_token = os.getenv('AUTH_TOKEN')
 
 # Include your authentication token in the headers
@@ -475,7 +487,7 @@ load_dotenv()
 
 # API endpoint and parameters
 
-API_URL_SUM_ETL = os.getenv('REPORT_SERVICE')+"sum_etl"
+API_URL_SUM_ETL = os.getenv('REPORT_SERVICE')+"airflow/sum_etl"
 
 # Include your authentication token in the headers
 auth_token = os.getenv('AUTH_TOKEN')
@@ -518,7 +530,7 @@ load_dotenv()
 plt.rcParams['font.family'] = 'Tahoma'
 
 # API endpoint and parameters
-api_url_total_run = os.getenv('REPORT_SERVICE')+"total_run"
+api_url_total_run = os.getenv('REPORT_SERVICE')+"airflow/total_run"
 auth_token = os.getenv('AUTH_TOKEN')
 
 # Include your authentication token in the headers
@@ -576,7 +588,7 @@ load_dotenv()
 plt.rcParams['font.family'] = 'Tahoma'
 
 # API endpoint and parameters
-api_url_total_run = os.getenv('REPORT_SERVICE')+"total_run"
+api_url_total_run = os.getenv('REPORT_SERVICE')+"airflow/total_run"
 auth_token = os.getenv('AUTH_TOKEN')
 
 # Include your authentication token in the headers
@@ -630,7 +642,7 @@ load_dotenv()
 
 
 # API endpoint and parameters
-API_URL_DAG = os.getenv('REPORT_SERVICE')+"get_dag"
+API_URL_DAG = os.getenv('REPORT_SERVICE')+"airflow/get_dag"
 auth_token = os.getenv('AUTH_TOKEN')
 headers = {'Authorization': f'Bearer {auth_token}'}  
 payload = {}
@@ -646,7 +658,7 @@ print(response.text)
 load_dotenv()
 
 # API endpoint and parameters
-API_URL_DAG = os.getenv('REPORT_SERVICE')+"get_dag"
+API_URL_DAG = os.getenv('REPORT_SERVICE')+"airflow/get_dag"
 auth_token = os.getenv('AUTH_TOKEN')
 headers = {'Authorization': f'Bearer {auth_token}'}
 payload = {}
@@ -697,10 +709,10 @@ context = {
     'total_success': df_total_runs['total_success'][0], #from total_run.py
     'total_failures': df_total_runs['total_failures'][0], #from total_run.py
     'success_rate': df_total_runs['success_rate'][0], #from total_run.py
-    'Monthly_work__process_summary_image':InlineImage(doc,"./DataBase/Monthly_work__process_summary_image.png",width=Cm(16)),
-    'job_scheldule_cycle_image':InlineImage(doc,"./DataBase/job_scheldule_cycle_image.png",width=Cm(16)),
-    'job_overall_status_image':InlineImage(doc,"./DataBase/job_overall_status_image.png",width=Cm(16)),
-    'job_detail_image':InlineImage(doc,"./DataBase/job_detail_image.png",width=Cm(16))
+    'Monthly_work__process_summary_image':InlineImage(doc,"./Airflow/Monthly_work__process_summary_image.png",width=Cm(16)),
+    'job_scheldule_cycle_image':InlineImage(doc,"./Airflow/job_scheldule_cycle_image.png",width=Cm(16)),
+    'job_overall_status_image':InlineImage(doc,"./Airflow/job_overall_status_image.png",width=Cm(16)),
+    'job_detail_image':InlineImage(doc,"./Airflow/job_detail_image.png",width=Cm(16))
     
     
     }

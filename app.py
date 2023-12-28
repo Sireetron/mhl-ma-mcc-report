@@ -6,7 +6,7 @@ from sections.SLC.slc import slc
 from sections.Audittrail.audittrail import auditrail
 from sections.NginX.nginx import nginx
 from sections.IOT.iot import iot
-from sections.DataBase.database_report import db
+# from sections.DataBase.database_report import db
 
 from docxtpl import DocxTemplate, InlineImage
 from docx import Document
@@ -31,7 +31,7 @@ def main():
     # my_path='/Users/mh-air/Desktop/fhon/python/mhl-ma-report/sections/Templateall.docx'
     # c = canvas.Canvas(my_path,bottomup=0)
     # draw_first_page(c)
-    merged_bio = db() | iot() | nginx() | auditrail() | slc() | {
+    merged_bio =  iot() | nginx() | auditrail() | slc() | {
         'month': month,
         'year' : year,
         'slc_image1': InlineImage(doc, f"./sections/SLC/Image/success.png", width=Cm(5)), 

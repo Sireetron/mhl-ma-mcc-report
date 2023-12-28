@@ -240,9 +240,9 @@ fig.update_layout(
 fig.write_image(f'./sections/Audittrail/Image/image.png')
 
 
-dataip=datauniq['ip_address'].count()
-datalogin= dataselected['user.title.objectId'].count()
-datauser = dataselected.drop_duplicates(subset='user.objectId')['user.objectId'].count()
+dataip=  "{:,}".format(datauniq['ip_address'].count()) 
+datalogin= "{:,}".format(dataselected['user.title.objectId'].count())
+datauser = "{:,}".format(dataselected.drop_duplicates(subset='user.objectId')['user.objectId'].count())
 
 
 #writing data in each table

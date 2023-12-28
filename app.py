@@ -6,6 +6,7 @@ from sections.SLC.slc import slc
 from sections.Audittrail.audittrail import auditrail
 from sections.NginX.nginx import nginx
 from sections.IOT.iot import iot
+from sections.DataBase.database_report import db
 
 from docxtpl import DocxTemplate, InlineImage
 from docx import Document
@@ -30,7 +31,7 @@ def main():
     # my_path='/Users/mh-air/Desktop/fhon/python/mhl-ma-report/sections/Templateall.docx'
     # c = canvas.Canvas(my_path,bottomup=0)
     # draw_first_page(c)
-    merged_bio = iot() | nginx() | auditrail() | slc() | {
+    merged_bio = db() | iot() | nginx() | auditrail() | slc() | {
         'month': month,
         'year' : year,
         'slc_image1': InlineImage(doc, f"./sections/SLC/Image/success.png", width=Cm(5)), 
@@ -38,7 +39,10 @@ def main():
         'audittrail_image': InlineImage(doc, f"./sections/Audittrail/Image/image.png", width=Cm(16)),
         'nginx_image1': InlineImage(doc, f"./sections/NginX/Image/criticalip.png", width=Cm(16)),
         'nginx_image2': InlineImage(doc, f"./sections/NginX/Image/topcountry.png", width=Cm(16)),
-        'nginx_image3': InlineImage(doc, f"./sections/NginX/Image/avgrate.png", width=Cm(16))
+        'nginx_image3': InlineImage(doc, f"./sections/NginX/Image/avgrate.png", width=Cm(16)),
+        'queries_by_type_image': InlineImage(doc,f"./sections/DataBase/queries_by_type_image.png",width=Cm(16)),
+        'disk_space_leakage_chart_image': InlineImage(doc,f"./sections/DataBase/disk_space_leakage_chart_image.png",width=Cm(16)),
+        'disk_space_salinity_chart_image': InlineImage(doc,f"./sections/DataBase/disk_space_salinity_chart_image.png",width=Cm(16))
     } 
   
     # print(merged_bio)

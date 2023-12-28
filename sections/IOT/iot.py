@@ -91,9 +91,9 @@ df_Project = pd.json_normalize(data['results'])[['objectId','name']].drop_duplic
 #iotmerge
 # !!!!!!! iot_merge = his_clean.merge(device_clean,how='left').merge(station_clean,how='left').merge(project_clean,how='left')
 iot_merge = df_history.merge(df_Device,how='left').merge(df_Device,how='left').merge(df_Station,how='left').merge(df_Project,how='left')
-device = iot_merge['device.objectId'].drop_duplicates().count()
-station = iot_merge['station.objectId'].drop_duplicates().count()
-project = iot_merge['project.objectId'].drop_duplicates().count()
+device = "{:,}".format(iot_merge['device.objectId'].drop_duplicates().count())
+station = "{:,}".format(iot_merge['station.objectId'].drop_duplicates().count())
+project = "{:,}".format(iot_merge['project.objectId'].drop_duplicates().count())
 
 
 #SetData to Object

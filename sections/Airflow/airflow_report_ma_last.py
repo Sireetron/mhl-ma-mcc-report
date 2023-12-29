@@ -27,7 +27,7 @@ from july.utils import date_range
 from matplotlib.colors import LinearSegmentedColormap
 import calendar
 from dotenv import load_dotenv
-import july
+# import july
 
 file_queries = os.getenv('REPORT_SERVICE')
 
@@ -694,10 +694,9 @@ else:
 # writing data in each table
 doc = DocxTemplate
 context = {
-
     'dag_all': df['dag_all'][0], ##from dag_all.py
     'dag_is_active': df['dag_is_active'][0], ##from dag_all.py
-    'job_inactive': df['job_inactive'][0], ##from dag_all.py
+    'dag_inactive': df['job_inactive'][0], ##from dag_all.py
     'dag_is_talend': df['dag_is_talend'][0], ##from dag_all.py
     'dag_is_python': df['dag_is_python'][0], ##from dag_all.py
     'normal_count': df_api['normal_count'][0], ##from sum_etl.py
@@ -709,15 +708,14 @@ context = {
     'total_success': df_total_runs['total_success'][0], #from total_run.py
     'total_failures': df_total_runs['total_failures'][0], #from total_run.py
     'success_rate': df_total_runs['success_rate'][0], #from total_run.py
-    'Monthly_work__process_summary_image':InlineImage(doc,"./Airflow/Monthly_work__process_summary_image.png",width=Cm(16)),
-    'job_scheldule_cycle_image':InlineImage(doc,"./Airflow/job_scheldule_cycle_image.png",width=Cm(16)),
-    'job_overall_status_image':InlineImage(doc,"./Airflow/job_overall_status_image.png",width=Cm(16)),
-    'job_detail_image':InlineImage(doc,"./Airflow/job_detail_image.png",width=Cm(16))
-    
-    
+    # 'Monthly_work__process_summary_image':InlineImage(doc,"./Airflow/Monthly_work__process_summary_image.png",width=Cm(16)),
+    # 'job_scheldule_cycle_image':InlineImage(doc,"./Airflow/job_scheldule_cycle_image.png",width=Cm(16)),
+    # 'job_overall_status_image':InlineImage(doc,"./Airflow/job_overall_status_image.png",width=Cm(16)),
+    # 'job_detail_image':InlineImage(doc,"./Airflow/job_detail_image.png",width=Cm(16))
     }
+print('context_',context)
 
-def get_auditrail() :
+def airflow() :
     # print(context)
     return context
 

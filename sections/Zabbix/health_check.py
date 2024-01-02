@@ -31,7 +31,7 @@ if not os.path.exists(save_dir):
 ## sheet สถานภาพเครื่องแม่ข่าย_และอุปกรณ์ต่อพ่วง_PoPNix owner P'Pooooo
 
 SHEET_ID = '14GmNx-6YkTfOSYfjQqGw-wC6h9VPqB3frw-ovtMTN5A'
-SHEET_NAME = 'status'
+SHEET_NAME = 'Dec66'
 url = f'https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={SHEET_NAME}'
 df = pd.read_csv(url)
 df # print(df.head())

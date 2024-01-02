@@ -18,18 +18,13 @@ def slc(month, year, day, doc, InlineImage):
     # get data from api
     token = 'aw33unoyu47lxu2n3uhr7cupm'
     response = requests.get('https://ticket-api.maholan.co.th/tickets/report',headers={'token': f'{token}', 'Origin': '0.0.0.0'})
-    # if response.status_code == 200:
-    #     # print('Request successful')
-    # else:
-    #     print(f'Request failed with status code: {response.status_code}')
-    #     # print(response.text)
-
-    # get typedata from api
     typeticket = requests.get('https://ticket-api.maholan.co.th/tickets/types',headers={'token': f'{token}', 'Origin': '0.0.0.0'})
     typeticket = typeticket.json()
     typeticket = pd.DataFrame(typeticket)
     data = response.json()
-    print(data)
+
+
+
     # Dataframe and filter other issue out
     df = pd.DataFrame(data)
     df_with_start = df.rename(columns={"created_at": "created_date"})
@@ -61,23 +56,18 @@ def slc(month, year, day, doc, InlineImage):
     dataprep_fil = dataprep.merge(df_with_start, left_on='title', right_on='title')
     datafil = dataprep_fil[['label_x', 'id_y', 'created_at', 'description', 'ticket_type_id_x', 'title','last_activity_at_x', 'status_x', 'assigned_to_x', 'create_at_month', 'create_at_year', 'closed_at_x', 'created_date']]
     datafil = datafil.loc[datafil['label_x'].isnull()]
-    print('datafil',datafil)
+
 
 
 
 
 
     # Get ticket at focused comment
-    # datafil.loc[datafil['status_x'] == 'open'].groupby('title').first()
-    # ticket_fil = pd.concat([datafil.loc[datafil['status_x'] == 'closed'].groupby('title', group_keys=False).last(), datafil.loc[datafil['status_x'] == 'open'].groupby('title', group_keys=False).first()]).reset_index()
-    # data_inmonth = (ticket_fil.loc[((ticket_fil['create_at_month'] == month) & (ticket_fil['create_at_year'] == year)) | ((ticket_fil['status_x'] == 'open') & (ticket_fil['create_at_month'] <= month) & (ticket_fil['create_at_year'] == year))])  # filter
-    #get ticket at focus comment
     datafil.loc[datafil['status_x'] == 'open' ].groupby('title').first()
     ticket_fil = pd.concat([datafil.loc[datafil['status_x'] == 'closed' ].groupby('title', group_keys=False).last(),datafil.loc[datafil['status_x'] == 'open' ].groupby('title', group_keys=False).first()]).reset_index()
-    ticket_fil
     data_inmonth = (ticket_fil.loc[((ticket_fil['create_at_month'] == month) & (ticket_fil['create_at_year']== year)) | ((ticket_fil['status_x'] == 'open') & (ticket_fil['create_at_month'] < month) & (ticket_fil['create_at_year']== year)) ]) #filter
-    data_inmonth
-    print('data_inmonth',data_inmonth)
+
+
 
 
 
@@ -89,6 +79,8 @@ def slc(month, year, day, doc, InlineImage):
     data_inmonth['duration'] = data_inmonth['last_activity_at_x_ex'] - data_inmonth['created_date_ex']
     # Lookup typeticket
     data_inmonth_fil = data_inmonth.merge(typeticket, left_on='ticket_type_id_x', right_on='id')
+
+
 
     # Summarize data to table 1
     allticket = data_inmonth_fil.groupby(['title_y'])['title_y'].count().reset_index(name='counts')  # งานทั้งหมดรายticket
@@ -105,6 +97,10 @@ def slc(month, year, day, doc, InlineImage):
     dataallticket['duration'] = dataallticket['duration'].astype(str).replace('NaT', '0')
     dataallticket['duration'] = dataallticket['duration'].astype(str).apply(lambda x: x.replace('days', 'วัน'))
 
+
+
+
+
     # Summarize data to table2
     datasuccess = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'closed'].sort_values('id_y').reset_index()
     datasuccess['duration'] = datasuccess['duration'].astype(str).apply(lambda x: x.replace('days', 'วัน'))
@@ -113,26 +109,31 @@ def slc(month, year, day, doc, InlineImage):
     dataop['duration'] = dataop['duration'].astype(str).apply(lambda x: x.replace('days', 'วัน'))
     dataop['remain'] = 90 - dataop['duration'].apply(lambda x: x.split()[0].replace('วัน', '')).astype(int)
 
+
+
+
+
     # Get Report date to table header
     thaiyear = int(year)+543
     alldate = _TH_FULL_MONTHS[month-1] + " "+str(thaiyear)
-    alldateandday = str(day) + " " + _TH_FULL_MONTHS[month-1] + " "+str(thaiyear)
+    alldateandday = str(day) + " " + _TH_FULL_MONTHS[month-1] + " "+str(datetime.now().year +543)
+
+
+
+
 
     # Get Data to Card Summary  (amount of allticket in month)
-    # tickettypenum = pd.DataFrame(data).count()['ticket_type_id']
     # get amount of ticket by status
     total_success = datasuccess['id_y'].count()
     total_op = dataop['id_y'].count()
     total_slc = data_inmonth_fil['id_y'].count()
 
-    print('datasuccess',datasuccess)
+
     datasuccesslast = datasuccess.loc[datasuccess['created_date_ex'].dt.month < month]['id_y'].count()
     dataoplast = dataop.loc[dataop['created_date_ex'].dt.month < month]['id_y'].count()
-    # dataoplast
     # creating chart for done work
     labels = ['success', 'operate']
     values = [total_slc-total_success, total_success]
-
     # Use `hole` to create a donut-like pie chart
     card_2 = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.7)]
                        )
@@ -153,6 +154,11 @@ def slc(month, year, day, doc, InlineImage):
                      ],
     )
     pio.write_image(card_2, f'./sections/SLC/Image/success.png', format='png')
+
+
+
+
+
 
     # creating chart for in-progress work
     labels = ['success', 'operate']
@@ -181,6 +187,11 @@ def slc(month, year, day, doc, InlineImage):
     pio.write_image(
         card_3, f'./sections/SLC/Image/inprogress.png', format='png')
 
+
+
+
+
+
     # writing data in each table
     deps = dataallticket['title_y'].unique()
     base_jsonall = dataallticket.to_dict('records')
@@ -202,6 +213,6 @@ def slc(month, year, day, doc, InlineImage):
         'allticket': f'{total_slc}  งาน'
 
     }
-    print('slc',context)
+    print('**********SLC Section Sucessful*****************')
 
     return context

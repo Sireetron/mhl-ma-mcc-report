@@ -155,6 +155,8 @@ def nginx(month,year, doc, InlineImage) :
     # plt.show()
 
 
+
+
     #Make AVG Graph
     df_ge=pd.DataFrame(dataframe['general'])
     total_requests = df_ge.loc['total_requests','general']
@@ -183,7 +185,7 @@ def nginx(month,year, doc, InlineImage) :
     avgts_sec = top5_df['avgts_sec']
     # สร้างกราฟแท่งที่เป็นทิศทางตั้งและสลับตำแหน่ง x และ y และเรียงจากมากไปน้อย
     fig, ax = plt.subplots(figsize=(10, 3))  # Adjust the figsize as needed
-    bars = ax.barh(shortened_data, avgts_sec, color='dodgerblue', edgecolor='black', linewidth=0.7)
+    bars = ax.barh(shortened_data, avgts_sec, color='dodgerblue')
     # กำหนดรูปแบบของตัวเลขที่แสดงในแกน x
     def format_func(value, tick_number):
         return "{:,.0f}".format(value)
@@ -226,11 +228,11 @@ def nginx(month,year, doc, InlineImage) :
     'total_requsets' : str(total_requests),
     'valid' : str(valid),
     'failed' : str(failed),
-    'nginx_image1': InlineImage(doc, f"./sections/NginX/Image/criticalip.png", width=Cm(16)),
-    'nginx_image2': InlineImage(doc, f"./sections/NginX/Image/topcountry.png", width=Cm(16)),
-    'nginx_image3': InlineImage(doc, f"./sections/NginX/Image/avgrate.png", width=Cm(16)),
+    'nginx_criticalip': InlineImage(doc, f"./sections/NginX/Image/criticalip.png", width=Cm(15),height=Cm(6)),
+    'nginx_topcountry': InlineImage(doc, f"./sections/NginX/Image/topcountry.png", width=Cm(15),height=Cm(7)),
+    'nginx_avgrate': InlineImage(doc, f"./sections/NginX/Image/avgrate.png", width=Cm(15),height=Cm(6)),
 
     }
-    print('NGINX',context)
+    print('**********NginX Section Sucessful*****************')
     return context
 

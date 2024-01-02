@@ -15,12 +15,10 @@ from plotly.subplots import make_subplots
 from docxtpl import DocxTemplate, InlineImage
 
 def auditrail(month,year, doc, InlineImage):
-    print('month',month)
-    print('year',year)
     #get data
     response = requests.get('https://bigdata.mwa.co.th/360-api/apis/audittrail')
     data = response.json()
-    print('data',data)
+
 
 
 
@@ -34,10 +32,8 @@ def auditrail(month,year, doc, InlineImage):
     # select data at currentmonth and focusfield
     df['createdAt'] = pd.to_datetime(df['createdAt'])
     filtered_df = df.loc[(df['createdAt'].dt.month == month)& (df['createdAt'].dt.year == year)]
-    print('filtered_df',filtered_df)
     dataselected = filtered_df[['ip_address', 'source', 'system.system_id','system.system_name', 'user.title.objectId', 'createdAt', 'note', 'user.objectId']]
     # dataselected.loc[dataselected['system.system_name'] == 'Water Salinity']
-    print('dataselected',dataselected)
 
 
 
@@ -268,5 +264,6 @@ def auditrail(month,year, doc, InlineImage):
         'user': datauser,
         'audittrail_image': InlineImage(doc, f"./sections/Audittrail/Image/image.png", width=Cm(16)),
     }
-    print('audittrail',context)
+    print('**********Audittrail Section Sucessful*****************')
+
     return context

@@ -37,20 +37,15 @@ print('last_day_of_previous_month',last_day_of_previous_month.month)
 print('month',month)
 print('year',year)
 print('day',day)
-
+ 
 def main():
-    # add_font()
+    print("\033[1;31;40m" + f' Loading Report เดือน  {month} ปี  {year}' + "\033[0m")
     doc = DocxTemplate("./sections/Template/Template copy 2.docx")
-    # my_path='/Users/mh-air/Desktop/fhon/python/mhl-ma-report/sections/Templateall.docx'
-    # c = canvas.Canvas(my_path,bottomup=0)
-    # draw_first_page(c)
-    merged_bio =  {**db(month, year, doc, InlineImage), **nginx(month, year, doc, InlineImage), **slc(month, year, day, doc, InlineImage),**auditrail(month, year, doc, InlineImage),**iot(month, year, doc, InlineImage)}
-    # print('merge', merged_bio)
-    # c.showPage() # saves current page
-    # c.save()
+    merged_bio =  {'month':month,'year':year,**nginx(month, year, doc, InlineImage),**auditrail(month, year, doc, InlineImage),**iot(month, year, doc, InlineImage), **slc(month, year, day, doc, InlineImage),**db(month, year, doc, InlineImage)}
     doc.render(merged_bio)
     doc.save(f'./sections/Report/รายงานประจำเดือน{month}_{year}.docx')
-    # doc.save('./sections/Report/db.docx')
+    
+    print("\033[1;31;40m" + f'Done' + "\033[0m")
 
 
 if __name__ == "__main__":

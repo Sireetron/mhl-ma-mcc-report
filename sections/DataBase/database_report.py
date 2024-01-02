@@ -3,8 +3,6 @@
 
 # In[1]:
 from docxtpl import DocxTemplate, R
-
-
 def db(month,year,doc,InlineImage) :
     from docx.shared import Cm
     from bs4 import BeautifulSoup
@@ -17,7 +15,7 @@ def db(month,year,doc,InlineImage) :
 
     import os
 
-    # os.system("pip install python-dotenv")
+    os.system("pip install python-dotenv")
 
 
     # In[3]:
@@ -131,14 +129,14 @@ def db(month,year,doc,InlineImage) :
         queries_per_second = int(match.group())
         # print(queries_per_second)
     else:
-        print("Variable value not found")
+        # print("Variable value not found")
 
 
     # In[12]:
 
 
     # formatted_num_queries
-    num_queries = '{:,}'.format(num_queries)
+        num_queries = '{:,}'.format(num_queries)
     # print(num_queries)
 
 
@@ -223,13 +221,24 @@ def db(month,year,doc,InlineImage) :
         extracted_list_str = match.group(1)
         # print(extracted_list_str)
         # print(type(extracted_list_str))
-        my_list_of_lists = ast.literal_eval(f"[{extracted_list_str}]")
+        queries_type = ast.literal_eval(f"[{extracted_list_str}]")
+        queries_type
+    
+    # Use a for loop to iterate through each sublist in queries_type
+    for sublist in queries_type:
+    # Check if the name is "Sum query types < 2%"
+     if sublist[0] == 'Sum query types < 2%':
+        # Change the name to "other"
+        sublist[0] = 'OTHER'
+
+    # Print my_list_of_lists after changing the name
+    # print(queries_type)
 
 
     # In[20]:
 
 
-    my_list_of_lists
+    # my_list_of_lists
 
 
     # In[21]:
@@ -311,7 +320,7 @@ def db(month,year,doc,InlineImage) :
     from cycler import cycler
 
     # Create a DataFrame
-    df_queries_by_type = pd.DataFrame(my_list_of_lists, columns=['Type', 'Count'])
+    df_queries_by_type = pd.DataFrame(queries_type, columns=['Type', 'Count'])
 
     # Calculate percentage
     df_queries_by_type['Percentage'] = df_queries_by_type['Count'] / df_queries_by_type['Count'].sum() * 100
@@ -327,9 +336,9 @@ def db(month,year,doc,InlineImage) :
     inner_colors = cmap(np.linspace(0.2, 1, num))
 
     # Plot the pie chart
-    fig_query_type, ax = plt.subplots(figsize=(10, 6))
+    fig_query_type, ax = plt.subplots(figsize=(16, 13))
     wedges, texts, autotexts = ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, pctdistance=0.85, explode=explode,
-                                    colors=inner_colors, textprops={'fontsize': 9, 'weight': 'bold'})
+                                    colors=inner_colors, textprops={'fontsize': 25})
 
     # Add a circle at the center to make it a donut chart
     centre_circle = plt.Circle((0, 0), 0.70, fc='white')
@@ -340,13 +349,13 @@ def db(month,year,doc,InlineImage) :
     ax.axis('equal')
 
     # Add legend
-    ax.legend(wedges, labels, title="Queries by Type", loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
+    ax.legend(wedges, labels, loc="best", fontsize='25', bbox_to_anchor=(1.7, 0.5))
 
     # # Add title
     # plt.title('Queries by Type', loc='left', fontsize=20, weight='bold', color="#9B9B9B")
 
     # Save the figure
-    plt.tight_layout()
+    # plt.tight_layout()
 
     # Save the plot
     fig_query_type.savefig('./sections/DataBase/Image/queries_by_type_image.png')
@@ -426,30 +435,30 @@ def db(month,year,doc,InlineImage) :
         inner_colors = ['#018CDF', '#F7AF41', '#E5E7E9']
 
         plt.cla()
-        plt.pie(sizes, colors=inner_colors, autopct='%1.1f%%', startangle=90, pctdistance=0.85, explode=explode,
-                textprops={'fontsize': 12, 'weight': 'bold'})
+        plt.pie(sizes, colors=inner_colors, autopct='%1.1f%%', startangle=90, pctdistance=0.85, 
+                textprops={'fontsize': 25})
         centre_circle = plt.Circle((0, 0), 0.70, fc='white')
         fig_disk_space = plt.gcf()
         fig_disk_space.gca().add_artist(centre_circle)
 
-        plt.tight_layout()
-        plt.legend(labels=labels, title="Type:", loc='right', bbox_to_anchor=(1.2, 0.5))
+        # plt.tight_layout()
+        plt.legend(labels=labels,  loc='best', fontsize='25')
         # plt.title('Disk Space', loc='left', fontsize=20, weight='bold', color="#9B9B9B")
-        fig_disk_space.set_size_inches(6, 7)
+        # fig_disk_space.set_size_inches(13, 10)
 
         # plt.show()
 
         # Save the plot
         image_disk_space = f'./sections/DataBase/Image/{db_name_space}_disk_space.png'
-        fig_disk_space.savefig(image_disk_space, bbox_inches='tight')
-        plt.close()  # Close the plot to avoid overlapping when iterating over multiple datasets
+        fig_disk_space.savefig(image_disk_space,)
+        # plt.close()  # Close the plot to avoid overlapping when iterating over multiple datasets
 
 
         # Append the values to disk_space list
         disk_space.append({
             'desc_space' : desc_space,
             'total_database_size_mb': total_database_size_space_mb, 
-            'image_disk_space': InlineImage(doc,f"{image_disk_space}",width=Cm(16)),
+            'image_disk_space': InlineImage(doc,f"{image_disk_space}",width=Cm(14),height=Cm(11)),
         })
 
     # Now, disk_space contains information for each iteration
@@ -467,7 +476,7 @@ def db(month,year,doc,InlineImage) :
         'num_unique_queries': num_unique_queries,
         'num_queries': num_queries,
         'queries_per_second': queries_per_second,
-        'queries_by_type_image': InlineImage(doc,"./sections/DataBase/Image/queries_by_type_image.png",width=Cm(16)),
+        'queries_by_type_image': InlineImage(doc,"./sections/DataBase/Image/queries_by_type_image.png",width=Cm(14),height=Cm(11)),
         'disk': disk_space,
         }
     # print('contextttttttt',context)/Users/mh-air/Desktop/fhon/python/mhl-ma-report/sections/DataBase/Image/queries_by_type_image.png
@@ -477,5 +486,5 @@ def db(month,year,doc,InlineImage) :
 
 
 
-    print('db',context)
+    print('**********DataBase Section Sucessful*****************')
     return context

@@ -113,7 +113,5 @@ def iot(month,year,doc,InlineImage) :
         'project' : project,
         'iot_table' : iot_merge,
     }
-    print('iot',context)
-
-
+    print('**********IOT Section Sucessful*****************')
     return context

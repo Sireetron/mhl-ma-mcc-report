@@ -23,6 +23,9 @@ from itertools import chain
 # Returns the current local date
 first_day_of_current_month = datetime.now().replace(day=1)
 last_day_of_previous_month = first_day_of_current_month - timedelta(days=1)
+
+
+
 # ////
 # month = last_day_of_previous_month.month
 month = 12

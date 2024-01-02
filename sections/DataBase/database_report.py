@@ -220,27 +220,27 @@ if match:
     extracted_list_str = match.group(1)
     print(extracted_list_str)
     print(type(extracted_list_str))
-    my_list_of_lists = ast.literal_eval(f"[{extracted_list_str}]")
+    queries_type = ast.literal_eval(f"[{extracted_list_str}]")
 
 
 # In[20]:
 
 
-my_list_of_lists
+queries_type
 
 
 # In[21]:
 
 
-# Use a for loop to iterate through each sublist in my_list_of_lists
-for sublist in my_list_of_lists:
+# Use a for loop to iterate through each sublist in queries_type
+for sublist in queries_type:
     # Check if the name is "Sum query types < 2%"
     if sublist[0] == 'Sum query types < 2%':
         # Change the name to "other"
-        sublist[0] = 'other'
+        sublist[0] = 'OTHER'
 
 # Print my_list_of_lists after changing the name
-print(my_list_of_lists)
+print(queries_type)
 
 
 # In[22]:
@@ -312,7 +312,7 @@ print(my_list_of_lists)
 # plt.show()
 
 
-# In[24]:
+# In[25]:
 
 
 import numpy as np
@@ -322,7 +322,7 @@ from matplotlib.cm import get_cmap
 from cycler import cycler
 
 # Create a DataFrame
-df_queries_by_type = pd.DataFrame(my_list_of_lists, columns=['Type', 'Count'])
+df_queries_by_type = pd.DataFrame(queries_type, columns=['Type', 'Count'])
 
 # Calculate percentage
 df_queries_by_type['Percentage'] = df_queries_by_type['Count'] / df_queries_by_type['Count'].sum() * 100
@@ -338,7 +338,7 @@ cmap = get_cmap('Blues')
 inner_colors = cmap(np.linspace(0.2, 1, num))
 
 # Plot the pie chart
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots(figsize=(13, 10))
 wedges, texts, autotexts = ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, pctdistance=0.85, explode=explode,
                                   colors=inner_colors, textprops={'fontsize': 9, 'weight': 'bold'})
 
@@ -367,14 +367,14 @@ plt.show()
 
 # ## Disk Space
 
-# In[25]:
+# In[26]:
 
 
 file_disk_space= os.getenv('REPORT_SERVICE')+"database/size"
 print(file_disk_space)
 
 
-# In[26]:
+# In[27]:
 
 
 import json
@@ -389,7 +389,7 @@ json_data
 
 # ## Disk Space
 
-# In[27]:
+# In[30]:
 
 
 import matplotlib.pyplot as plt
@@ -445,7 +445,7 @@ for df_disk_space in json_data:
     plt.tight_layout()
     plt.legend(labels=labels, title="Type:", loc='right', bbox_to_anchor=(1.2, 0.5))
     # plt.title('Disk Space', loc='left', fontsize=20, weight='bold', color="#9B9B9B")
-    fig.set_size_inches(6, 7)
+    fig.set_size_inches(13, 10)
 
     plt.show()
 
@@ -489,3 +489,6 @@ context = {
 def auditrail() :
     # print(context)
     return context
+
+
+

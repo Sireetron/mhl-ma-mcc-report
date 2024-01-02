@@ -1,10 +1,14 @@
 
-from reportlab.pdfgen import canvas
-from utils.font import add_font
-from sections.first_page import draw_first_page
+# from reportlab.pdfgen import canvas
+# from utils.font import add_font
+# from sections.first_page import draw_first_page
 from sections.SLC.slc import slc
-from sections.Audittrail.audittrail import auditrail
 from sections.NginX.nginx import nginx
+from sections.Audittrail.audittrail import auditrail
+from sections.IOT.iot import iot
+from sections.DataBase.database_report import db
+# from xml.etree import ElementTree
+
 
 from docxtpl import DocxTemplate, InlineImage
 from docx import Document
@@ -23,26 +27,20 @@ day = datetime.now().day
 
 def main():
     # add_font()
-    doc = DocxTemplate("./sections/Template/Template.docx")
-
+    doc = DocxTemplate("./sections/Template/Template copy 2.docx")
     # my_path='/Users/mh-air/Desktop/fhon/python/mhl-ma-report/sections/Templateall.docx'
     # c = canvas.Canvas(my_path,bottomup=0)
     # draw_first_page(c)
-    merged_bio = nginx() | auditrail() | slc() | {
-        'slc_image1': InlineImage(doc, f"./sections/SLC/Image/{month}_{year}_success.png", width=Cm(5)), 
-        'slc_image2': InlineImage(doc, f"./sections/SLC/Image/{month}_{year}_inprogress.png", width=Cm(5)), 
-        'audittrail_image': InlineImage(doc, f"./sections/Audittrail/Image/{month}_{year}_image.png", width=Cm(16)),
-        'nginx_image1': InlineImage(doc, f"./sections/NginX/Image/{month}_{year}_criticalip.png", width=Cm(16)),
-        'nginx_image2': InlineImage(doc, f"./sections/NginX/Image/{month}_{year}_topcountry.png", width=Cm(16)),
-        'nginx_image3': InlineImage(doc, f"./sections/NginX/Image/{month}_{year}_avgrate.png", width=Cm(16))
-        }
-
-    # print(merged_bio)
+    merged_bio = {**db(month, year, doc, InlineImage), **nginx(month, year, doc, InlineImage), **slc(month, year, day, doc, InlineImage),
+                  **auditrail(month, year, doc, InlineImage),
+                  **iot(month, year, doc, InlineImage), 'month': month, 'year': year
+                  }
+    print('merge', merged_bio)
     # c.showPage() # saves current page
     # c.save()
-
     doc.render(merged_bio)
     doc.save(f'./sections/Report/รายงานประจำเดือน{month}_{year}.docx')
+    # doc.save('./sections/Report/db.docx')
 
 
 if __name__ == "__main__":

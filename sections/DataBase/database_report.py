@@ -232,6 +232,20 @@ my_list_of_lists
 # In[21]:
 
 
+# Use a for loop to iterate through each sublist in my_list_of_lists
+for sublist in my_list_of_lists:
+    # Check if the name is "Sum query types < 2%"
+    if sublist[0] == 'Sum query types < 2%':
+        # Change the name to "other"
+        sublist[0] = 'other'
+
+# Print my_list_of_lists after changing the name
+print(my_list_of_lists)
+
+
+# In[22]:
+
+
 # import matplotlib.pyplot as plt
 
 # # Extract labels and values from the data
@@ -247,7 +261,7 @@ my_list_of_lists
 # plt.show()
 
 
-# In[22]:
+# In[23]:
 
 
 # import numpy as np
@@ -298,7 +312,7 @@ my_list_of_lists
 # plt.show()
 
 
-# In[23]:
+# In[24]:
 
 
 import numpy as np
@@ -353,14 +367,14 @@ plt.show()
 
 # ## Disk Space
 
-# In[24]:
+# In[25]:
 
 
 file_disk_space= os.getenv('REPORT_SERVICE')+"database/size"
 print(file_disk_space)
 
 
-# In[25]:
+# In[26]:
 
 
 import json
@@ -375,7 +389,7 @@ json_data
 
 # ## Disk Space
 
-# In[26]:
+# In[27]:
 
 
 import matplotlib.pyplot as plt
@@ -452,7 +466,7 @@ for df_disk_space in json_data:
 print(disk_space)
 
 
-# In[27]:
+# In[28]:
 
 
 from docxtpl import DocxTemplate,InlineImage

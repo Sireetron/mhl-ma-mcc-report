@@ -17,8 +17,7 @@ def slc(month, year, day, doc, InlineImage):
 
     # get data from api
     token = 'aw33unoyu47lxu2n3uhr7cupm'
-    response = requests.get('https://ticket-api.maholan.co.th/tickets/report',
-                            headers={'token': f'{token}', 'Origin': '0.0.0.0'})
+    response = requests.get('https://ticket-api.maholan.co.th/tickets/report',headers={'token': f'{token}', 'Origin': '0.0.0.0'})
     # if response.status_code == 200:
     #     # print('Request successful')
     # else:
@@ -26,12 +25,11 @@ def slc(month, year, day, doc, InlineImage):
     #     # print(response.text)
 
     # get typedata from api
-    typeticket = requests.get('https://ticket-api.maholan.co.th/tickets/types',
-                              headers={'token': f'{token}', 'Origin': '0.0.0.0'})
+    typeticket = requests.get('https://ticket-api.maholan.co.th/tickets/types',headers={'token': f'{token}', 'Origin': '0.0.0.0'})
     typeticket = typeticket.json()
     typeticket = pd.DataFrame(typeticket)
     data = response.json()
-
+    print(data)
     # Dataframe and filter other issue out
     df = pd.DataFrame(data)
     df_with_start = df.rename(columns={"created_at": "created_date"})
@@ -49,84 +47,76 @@ def slc(month, year, day, doc, InlineImage):
         "พฤศจิกายน",
         "ธันวาคม",
     ]
-    _TH_FULL_MONTHS[month]
+    _TH_FULL_MONTHS[month-1]
+
+
+
+
+
 
     # Flat Data to Get comment in json child
-    dataprep = pd.json_normalize(data, 'comments', [
-                                 'ticket_type_id', 'title', 'last_activity_at', 'status', 'assigned_to', 'closed_at', 'label'])
-    dataprep['create_at_month'] = pd.to_datetime(
-        dataprep['created_at']).dt.month
+    dataprep = pd.json_normalize(data, 'comments', ['ticket_type_id', 'title', 'last_activity_at', 'status', 'assigned_to', 'closed_at', 'label'])
+    dataprep['create_at_month'] = pd.to_datetime(dataprep['created_at']).dt.month
     dataprep['create_at_year'] = pd.to_datetime(dataprep['created_at']).dt.year
-    dataprep_fil = dataprep.merge(
-        df_with_start, left_on='title', right_on='title')
-    datafil = dataprep_fil[['label_x', 'id_y', 'created_at', 'description', 'ticket_type_id_x', 'title',
-                            'last_activity_at_x', 'status_x', 'assigned_to_x', 'create_at_month', 'create_at_year', 'closed_at_x', 'created_date']]
+    dataprep_fil = dataprep.merge(df_with_start, left_on='title', right_on='title')
+    datafil = dataprep_fil[['label_x', 'id_y', 'created_at', 'description', 'ticket_type_id_x', 'title','last_activity_at_x', 'status_x', 'assigned_to_x', 'create_at_month', 'create_at_year', 'closed_at_x', 'created_date']]
     datafil = datafil.loc[datafil['label_x'].isnull()]
+    print('datafil',datafil)
+
+
+
+
 
     # Get ticket at focused comment
-    datafil.loc[datafil['status_x'] == 'open'].groupby('title').first()
-    ticket_fil = pd.concat([datafil.loc[datafil['status_x'] == 'closed'].groupby('title', group_keys=False).last(
-    ), datafil.loc[datafil['status_x'] == 'open'].groupby('title', group_keys=False).first()]).reset_index()
-    data_inmonth = (ticket_fil.loc[((ticket_fil['create_at_month'] == month) & (ticket_fil['create_at_year'] == year)) | (
-        (ticket_fil['status_x'] == 'open') & (ticket_fil['create_at_month'] <= month) & (ticket_fil['create_at_year'] == year))])  # filter
+    # datafil.loc[datafil['status_x'] == 'open'].groupby('title').first()
+    # ticket_fil = pd.concat([datafil.loc[datafil['status_x'] == 'closed'].groupby('title', group_keys=False).last(), datafil.loc[datafil['status_x'] == 'open'].groupby('title', group_keys=False).first()]).reset_index()
+    # data_inmonth = (ticket_fil.loc[((ticket_fil['create_at_month'] == month) & (ticket_fil['create_at_year'] == year)) | ((ticket_fil['status_x'] == 'open') & (ticket_fil['create_at_month'] <= month) & (ticket_fil['create_at_year'] == year))])  # filter
+    #get ticket at focus comment
+    datafil.loc[datafil['status_x'] == 'open' ].groupby('title').first()
+    ticket_fil = pd.concat([datafil.loc[datafil['status_x'] == 'closed' ].groupby('title', group_keys=False).last(),datafil.loc[datafil['status_x'] == 'open' ].groupby('title', group_keys=False).first()]).reset_index()
+    ticket_fil
+    data_inmonth = (ticket_fil.loc[((ticket_fil['create_at_month'] == month) & (ticket_fil['create_at_year']== year)) | ((ticket_fil['status_x'] == 'open') & (ticket_fil['create_at_month'] < month) & (ticket_fil['create_at_year']== year)) ]) #filter
+    data_inmonth
+    print('data_inmonth',data_inmonth)
+
+
 
     # Chage str to date time for calculating work duration
-    data_inmonth['created_date_ex'] = data_inmonth['created_date'].apply(
-        lambda x: datetime.strptime(x, "%d/%m/%Y %H:%M"))
-    data_inmonth['last_activity_at_x_ex'] = data_inmonth['last_activity_at_x'].apply(
-        lambda x: datetime.strptime(x, "%d/%m/%Y %H:%M"))
-    data_inmonth['created_date_ex'] = data_inmonth['created_date_ex'].apply(
-        lambda x: x.replace(year=year))
-    data_inmonth['last_activity_at_x_ex'] = data_inmonth['last_activity_at_x_ex'].apply(
-        lambda x: x.replace(year=year))
-    data_inmonth['duration'] = data_inmonth['last_activity_at_x_ex'] - \
-        data_inmonth['created_date_ex']
+    data_inmonth['created_date_ex'] = data_inmonth['created_date'].apply(lambda x: datetime.strptime(x, "%d/%m/%Y %H:%M"))
+    data_inmonth['last_activity_at_x_ex'] = data_inmonth['last_activity_at_x'].apply(lambda x: datetime.strptime(x, "%d/%m/%Y %H:%M"))
+    data_inmonth['created_date_ex'] = data_inmonth['created_date_ex'].apply(lambda x: x.replace(year=year))
+    data_inmonth['last_activity_at_x_ex'] = data_inmonth['last_activity_at_x_ex'].apply(lambda x: x.replace(year=year))
+    data_inmonth['duration'] = data_inmonth['last_activity_at_x_ex'] - data_inmonth['created_date_ex']
     # Lookup typeticket
-    data_inmonth_fil = data_inmonth.merge(
-        typeticket, left_on='ticket_type_id_x', right_on='id')
+    data_inmonth_fil = data_inmonth.merge(typeticket, left_on='ticket_type_id_x', right_on='id')
 
     # Summarize data to table 1
-    allticket = data_inmonth_fil.groupby(['title_y'])['title_y'].count(
-    ).reset_index(name='counts')  # งานทั้งหมดรายticket
+    allticket = data_inmonth_fil.groupby(['title_y'])['title_y'].count().reset_index(name='counts')  # งานทั้งหมดรายticket
     #####
-    ticketsucc = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'closed'].groupby(
-        ['title_y'])['title_y'].count().astype(str).reset_index(name='success')  # งานที่เสร็จสิ้นรายticket
+    ticketsucc = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'closed'].groupby(['title_y'])['title_y'].count().astype(str).reset_index(name='success')  # งานที่เสร็จสิ้นรายticket
     #####
-    ticketop = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'open'].groupby(
-        ['title_y'])['title_y'].count().astype(str).reset_index(name='open')  # งานที่กำลังทำรายticket
+    ticketop = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'open'].groupby(['title_y'])['title_y'].count().astype(str).reset_index(name='open')  # งานที่กำลังทำรายticket
     #####
-    tickeduration = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'closed'].groupby(
-        ['title_y'])['duration'].mean().reset_index()  # AvgdurationbyTicket
+    tickeduration = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'closed'].groupby(['title_y'])['duration'].mean().reset_index()  # AvgdurationbyTicket
     # Merge and Recalculate working duration
-    dataallticket = allticket.merge(ticketsucc, how='left').merge(
-        ticketop, how='left').merge(tickeduration, how='left')
-    dataallticket['success'] = dataallticket['success'].astype(
-        str).replace('nan', '0')
-    dataallticket['open'] = dataallticket['open'].astype(
-        str).replace('nan', '0')
-    dataallticket['duration'] = dataallticket['duration'].astype(
-        str).replace('NaT', '0')
-    dataallticket['duration'] = dataallticket['duration'].astype(
-        str).apply(lambda x: x.replace('days', 'วัน'))
+    dataallticket = allticket.merge(ticketsucc, how='left').merge(ticketop, how='left').merge(tickeduration, how='left')
+    dataallticket['success'] = dataallticket['success'].astype(str).replace('nan', '0')
+    dataallticket['open'] = dataallticket['open'].astype(str).replace('nan', '0')
+    dataallticket['duration'] = dataallticket['duration'].astype(str).replace('NaT', '0')
+    dataallticket['duration'] = dataallticket['duration'].astype(str).apply(lambda x: x.replace('days', 'วัน'))
 
     # Summarize data to table2
-    datasuccess = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'closed'].sort_values(
-        'id_y').reset_index()
-    datasuccess['duration'] = datasuccess['duration'].astype(
-        str).apply(lambda x: x.replace('days', 'วัน'))
+    datasuccess = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'closed'].sort_values('id_y').reset_index()
+    datasuccess['duration'] = datasuccess['duration'].astype(str).apply(lambda x: x.replace('days', 'วัน'))
     # Filter and Edit Showed Data
-    dataop = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'open'].sort_values(
-        'id_y').reset_index()
-    dataop['duration'] = dataop['duration'].astype(
-        str).apply(lambda x: x.replace('days', 'วัน'))
-    dataop['remain'] = 90 - \
-        dataop['duration'].apply(
-            lambda x: x.split()[0].replace('วัน', '')).astype(int)
+    dataop = data_inmonth_fil.loc[data_inmonth_fil['status_x'] == 'open'].sort_values('id_y').reset_index()
+    dataop['duration'] = dataop['duration'].astype(str).apply(lambda x: x.replace('days', 'วัน'))
+    dataop['remain'] = 90 - dataop['duration'].apply(lambda x: x.split()[0].replace('วัน', '')).astype(int)
 
     # Get Report date to table header
     thaiyear = int(year)+543
     alldate = _TH_FULL_MONTHS[month-1] + " "+str(thaiyear)
-    alldateandday = str(day) + " " + _TH_FULL_MONTHS[month] + " "+str(thaiyear)
+    alldateandday = str(day) + " " + _TH_FULL_MONTHS[month-1] + " "+str(thaiyear)
 
     # Get Data to Card Summary  (amount of allticket in month)
     # tickettypenum = pd.DataFrame(data).count()['ticket_type_id']
@@ -135,11 +125,10 @@ def slc(month, year, day, doc, InlineImage):
     total_op = dataop['id_y'].count()
     total_slc = data_inmonth_fil['id_y'].count()
 
-    datasuccesslast = datasuccess.loc[datasuccess['created_date_ex'].dt.month <
-                                      month+1]['id_y'].count()
-    dataoplast = dataop.loc[dataop['created_date_ex'].dt.month <
-                            month+1]['id_y'].count()
-    dataoplast
+    print('datasuccess',datasuccess)
+    datasuccesslast = datasuccess.loc[datasuccess['created_date_ex'].dt.month < month]['id_y'].count()
+    dataoplast = dataop.loc[dataop['created_date_ex'].dt.month < month]['id_y'].count()
+    # dataoplast
     # creating chart for done work
     labels = ['success', 'operate']
     values = [total_slc-total_success, total_success]
@@ -213,6 +202,6 @@ def slc(month, year, day, doc, InlineImage):
         'allticket': f'{total_slc}  งาน'
 
     }
-    # print(context)
+    print('slc',context)
 
     return context

@@ -18,6 +18,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from datetime import datetime
 
 
+
 def nginx(month,year, doc, InlineImage) :
 
     # Getdata and Query Data
@@ -230,6 +231,6 @@ def nginx(month,year, doc, InlineImage) :
     'nginx_image3': InlineImage(doc, f"./sections/NginX/Image/avgrate.png", width=Cm(16)),
 
     }
-    # print('NGINX',context)
+    print('NGINX',context)
     return context
 

@@ -3,6 +3,8 @@
 
 # In[1]:
 from docxtpl import DocxTemplate, R
+
+
 def db(month,year,doc,InlineImage) :
     from docx.shared import Cm
     from bs4 import BeautifulSoup
@@ -15,7 +17,7 @@ def db(month,year,doc,InlineImage) :
 
     import os
 
-    os.system("pip install python-dotenv")
+    # os.system("pip install python-dotenv")
 
 
     # In[3]:
@@ -475,5 +477,5 @@ def db(month,year,doc,InlineImage) :
 
 
 
-    # print('contextttttttt',context)
+    print('db',context)
     return context

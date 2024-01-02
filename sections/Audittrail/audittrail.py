@@ -15,10 +15,12 @@ from plotly.subplots import make_subplots
 from docxtpl import DocxTemplate, InlineImage
 
 def auditrail(month,year, doc, InlineImage):
-
+    print('month',month)
+    print('year',year)
     #get data
     response = requests.get('https://bigdata.mwa.co.th/360-api/apis/audittrail')
     data = response.json()
+    print('data',data)
 
 
 
@@ -31,37 +33,30 @@ def auditrail(month,year, doc, InlineImage):
 
     # select data at currentmonth and focusfield
     df['createdAt'] = pd.to_datetime(df['createdAt'])
-    filtered_df = df.loc[(df['createdAt'].dt.month == month)
-                        & (df['createdAt'].dt.year == year)]
-    dataselected = filtered_df[['ip_address', 'source', 'system.system_id',
-                                'system.system_name', 'user.title.objectId', 'createdAt', 'note', 'user.objectId']]
-    dataselected.loc[dataselected['system.system_name'] == 'Water Salinity']
+    filtered_df = df.loc[(df['createdAt'].dt.month == month)& (df['createdAt'].dt.year == year)]
+    print('filtered_df',filtered_df)
+    dataselected = filtered_df[['ip_address', 'source', 'system.system_id','system.system_name', 'user.title.objectId', 'createdAt', 'note', 'user.objectId']]
+    # dataselected.loc[dataselected['system.system_name'] == 'Water Salinity']
+    print('dataselected',dataselected)
 
 
 
 
     # replacewordlabel
-    dataselected['system.system_name'] = dataselected['system.system_name'].astype(
-        str).replace('Water Salinity', 'Water-Eyes')
-    dataselected['system.system_name'] = dataselected['system.system_name'].astype(
-        str).replace('nan', 'Data Service')
-    dataselected['system.system_name'] = dataselected['system.system_name'].astype(
-        str).replace('Worksite Management', 'CIA')
-    dataselected['system.system_name'] = dataselected['system.system_name'].astype(
-        str).replace('Water Leakage', 'Leak Detective')
+    dataselected['system.system_name'] = dataselected['system.system_name'].astype(str).replace('Water Salinity', 'Water-Eyes')
+    dataselected['system.system_name'] = dataselected['system.system_name'].astype(str).replace('nan', 'Data Service')
+    dataselected['system.system_name'] = dataselected['system.system_name'].astype(str).replace('Worksite Management', 'CIA')
+    dataselected['system.system_name'] = dataselected['system.system_name'].astype(str).replace('Water Leakage', 'Leak Detective')
 
 
 
     # querydata for ip
     datauniq = dataselected .drop_duplicates(subset='ip_address')
     datauniqdfil = datauniq.query("source == 'desktop'")
-    dataipdesk = datauniqdfil.groupby('system.system_name').count().reset_index()[
-        ['system.system_name', 'ip_address']]  # .note.transform('count')
+    dataipdesk = datauniqdfil.groupby('system.system_name').count().reset_index()[['system.system_name', 'ip_address']]  # .note.transform('count')
     datauniqdfil_phone = datauniq.query("source == 'phone'")
-    datauniqdfil_phonefil = datauniqdfil_phone.groupby(
-        'system.system_name').count().reset_index()[['system.system_name', 'ip_address']]
-    dataiptab = datauniq.query("source == 'tablet'").groupby(
-        'system.system_name').count().reset_index()[['system.system_name', 'ip_address']]
+    datauniqdfil_phonefil = datauniqdfil_phone.groupby('system.system_name').count().reset_index()[['system.system_name', 'ip_address']]
+    dataiptab = datauniq.query("source == 'tablet'").groupby('system.system_name').count().reset_index()[['system.system_name', 'ip_address']]
 
 
 
@@ -70,12 +65,9 @@ def auditrail(month,year, doc, InlineImage):
     datalogindesk = dataselected.loc[(dataselected['source'] == 'desktop')]
     dataloginphone = dataselected.loc[(dataselected['source'] == 'phone')]
     datalogintablet = dataselected.loc[(dataselected['source'] == 'tablet')]
-    datalogin_desktop = datalogindesk.groupby('system.system_name').count().reset_index()[
-        ['system.system_name', 'ip_address']]
-    datalogin_phone = dataloginphone.groupby('system.system_name').count().reset_index()[
-        ['system.system_name', 'ip_address']]
-    datalogin_tablet = datalogintablet.groupby('system.system_name').count(
-    ).reset_index()[['system.system_name', 'ip_address']]
+    datalogin_desktop = datalogindesk.groupby('system.system_name').count().reset_index()[['system.system_name', 'ip_address']]
+    datalogin_phone = dataloginphone.groupby('system.system_name').count().reset_index()[['system.system_name', 'ip_address']]
+    datalogin_tablet = datalogintablet.groupby('system.system_name').count().reset_index()[['system.system_name', 'ip_address']]
 
 
 
@@ -83,12 +75,9 @@ def auditrail(month,year, doc, InlineImage):
     # querydata for USER
     data_desktop = dataselected.query("source == 'desktop'")
     data_phone = dataselected.query("source == 'phone'")
-    data_desktop_fil = data_desktop.drop_duplicates(subset='user.objectId').groupby(
-        'system.system_name').count().reset_index()[['system.system_name', 'user.objectId']]
-    data_phone_fil = data_phone.drop_duplicates(subset='user.objectId').groupby(
-        'system.system_name').count().reset_index()[['system.system_name', 'user.objectId']]
-    datatab_fil = dataselected.query("source == 'tablet'").drop_duplicates(subset='user.objectId').groupby(
-        'system.system_name').count().reset_index()[['system.system_name', 'user.objectId']]
+    data_desktop_fil = data_desktop.drop_duplicates(subset='user.objectId').groupby('system.system_name').count().reset_index()[['system.system_name', 'user.objectId']]
+    data_phone_fil = data_phone.drop_duplicates(subset='user.objectId').groupby('system.system_name').count().reset_index()[['system.system_name', 'user.objectId']]
+    datatab_fil = dataselected.query("source == 'tablet'").drop_duplicates(subset='user.objectId').groupby('system.system_name').count().reset_index()[['system.system_name', 'user.objectId']]
  
 
 
@@ -220,8 +209,7 @@ def auditrail(month,year, doc, InlineImage):
 
 
     # Create subplots
-    fig = make_subplots(rows=1, cols=3, shared_yaxes=True, subplot_titles=(
-        'การเข้าใช้ (ครั้ง)', 'IP เข้าใช้ (IPs)', 'ผู้เข้าใช้ (ราย)'))
+    fig = make_subplots(rows=1, cols=3, shared_yaxes=True, subplot_titles=('การเข้าใช้ (ครั้ง)', 'IP เข้าใช้ (IPs)', 'ผู้เข้าใช้ (ราย)'))
 
     # Add traces to subplots
     fig.add_trace(trace11, row=1, col=1)
@@ -267,8 +255,7 @@ def auditrail(month,year, doc, InlineImage):
     #make a data value
     dataip = "{:,}".format(datauniq['ip_address'].count())
     datalogin = "{:,}".format(dataselected['user.title.objectId'].count())
-    datauser = "{:,}".format(dataselected.drop_duplicates(
-        subset='user.objectId')['user.objectId'].count())
+    datauser = "{:,}".format(dataselected.drop_duplicates(subset='user.objectId')['user.objectId'].count())
 
 
 
@@ -281,5 +268,5 @@ def auditrail(month,year, doc, InlineImage):
         'user': datauser,
         'audittrail_image': InlineImage(doc, f"./sections/Audittrail/Image/image.png", width=Cm(16)),
     }
-    print('context',context)
+    print('audittrail',context)
     return context

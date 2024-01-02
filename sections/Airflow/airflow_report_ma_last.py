@@ -298,8 +298,7 @@ fig.update_layout(
 )
 
 
-img_path = 'job_scheldule_cycle_image'
-plt.savefig(img_path,bbox_inches='tight')
+fig.write_image('job_scheldule_cycle_image.png')
 # Show the plot
 # fig.show()
 
@@ -691,6 +690,19 @@ else:
 
 # %%
 
+import july
+import matplotlib.pyplot as plt
+
+# Assuming 'Execution Date' is a datetime column in your DataFrame
+ax = july.calendar_plot(
+    df['Execution Date'],  # Replace with your actual datetime column
+    df['Percent Success'],  # Replace with your actual success percentage column
+    cmap=airflow_cmap,
+    title="Data Pipelines Health"
+)
+img_path = '12month_calendar_image'
+plt.savefig(img_path,bbox_inches='tight')
+
 # writing data in each table
 doc = DocxTemplate
 context = {
@@ -712,7 +724,8 @@ context = {
     'Monthly_work__process_summary_image':InlineImage(doc,"./Airflow/Monthly_work__process_summary_image.png",width=Cm(16)),
     'job_scheldule_cycle_image':InlineImage(doc,"./Airflow/job_scheldule_cycle_image.png",width=Cm(16)),
     'job_overall_status_image':InlineImage(doc,"./Airflow/job_overall_status_image.png",width=Cm(16)),
-    'job_detail_image':InlineImage(doc,"./Airflow/job_detail_image.png",width=Cm(16))
+    'job_detail_image':InlineImage(doc,"./Airflow/job_detail_image.png",width=Cm(16)),
+    '12month_calendar_image':InlineImage(doc,"./Airflow/12month_calendar_image.png",width=Cm(16))
     
     
     }

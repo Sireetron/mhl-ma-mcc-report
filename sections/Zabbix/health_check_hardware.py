@@ -8,7 +8,7 @@ from docxtpl import DocxTemplate,InlineImage
 # writing data in each table
 doc = DocxTemplate
 # Define the directory to save the figures
-save_dir = "./sections/Zabbix/Image"
+save_dir = "./result"
 
 # Ensure the directory exists, create it if necessary
 if not os.path.exists(save_dir):

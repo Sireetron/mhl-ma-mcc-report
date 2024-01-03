@@ -129,7 +129,6 @@ for i in range(len(lst_health)):  # Display at most 10 figures
 # %%
 health_check[1]
 
-
 context = {
          'health_check': health_check
         }

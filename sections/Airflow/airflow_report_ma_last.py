@@ -29,14 +29,15 @@ import calendar
 from dotenv import load_dotenv
 import july
 
-file_queries = os.getenv('REPORT_SERVICE')
+
 
 # Load environment variables from the .env file
 load_dotenv()
 
-month = datetime.now().month -1
+file_queries = os.getenv('REPORT_SERVICE')
+month = datetime.now().month 
 year = datetime.now().year
-api_params = {'month': '09', 'year': '2023'}
+api_params = {'month': '08', 'year': '2023'}
 
 def get_first_and_last_day_of_month(year, month):
     first_day = datetime(year, month, 1)

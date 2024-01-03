@@ -19,13 +19,28 @@ if not os.path.exists(save_dir):
 
 # %%
 ## original data https://docs.google.com/spreadsheets/d/14GmNx-6YkTfOSYfjQqGw-wC6h9VPqB3frw-ovtMTN5A/edit?pli=1#gid=0
-    
+
+# %%
+from datetime import datetime
+
+# Original date string
+original_date_string = "2024-01"
+
+# Convert to datetime object
+original_date = datetime.strptime(original_date_string, "%Y-%m")
+
+# Format the datetime object into a new string
+sheet_name = original_date.strftime("%b%y")
+
+# Display the result
+print(sheet_name)
+
 # %%
 ## sheet สถานภาพเครื่องแม่ข่าย_และอุปกรณ์ต่อพ่วง_PoPNix owner P'Pooooo
 
 sheet_id = '14GmNx-6YkTfOSYfjQqGw-wC6h9VPqB3frw-ovtMTN5A'
 sheet_name = 'Jan67'
-url = f'https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={SHEET_NAME}'
+url = f'https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}'
 df = pd.read_csv(url)
 df # print(df.head())
 

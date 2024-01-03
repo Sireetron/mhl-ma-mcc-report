@@ -19,7 +19,7 @@ if not os.path.exists(save_dir):
 
 # %%
 ## original data https://docs.google.com/spreadsheets/d/14GmNx-6YkTfOSYfjQqGw-wC6h9VPqB3frw-ovtMTN5A/edit?pli=1#gid=0
-
+    
 # %%
 ## sheet สถานภาพเครื่องแม่ข่าย_และอุปกรณ์ต่อพ่วง_PoPNix owner P'Pooooo
 
@@ -116,11 +116,10 @@ health_check[1]
 
 
 context = {
-		 'sheet_name': sheet_name,
          'health_check': health_check
         }
 
 
-def auditrail() :
+def health_check_hardware() :
     # print(context)
     return context

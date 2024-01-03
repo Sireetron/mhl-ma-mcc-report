@@ -110,49 +110,54 @@ def nginx(month,year, doc, InlineImage) :
 
 
     # Create a horizontal bar chart for each of the top 5 countries with their top 5 data points
-    fig, axes = plt.subplots(nrows=len(top_5_countries), ncols=1, figsize=(12, 4), sharex=True)
-    for idx, country in enumerate(top_5_countries):
-        # Filter data for the current country
-        country_data = df_filtered[df_filtered['country'] == country]
-        # Get the top 5 data points for the current country and sort in descending order based on hits_count
-        top_5_data = country_data.groupby('data')['hits_count'].sum().nlargest(5).sort_values(ascending=True).index
-        # Initialize variables for positioning
-        start = 0
-        gap = 0.2
-        labels = []
-        label_pos = np.array([])
-        # Loop through the top 5 data points for the current country
-        for data_point in top_5_data:
-            data_point_info = country_data[country_data['data'] == data_point]
-            total_hits = data_point_info['hits_count'].sum()
-            # Add the country name in front of the data point label
-            labels.append(f"{country} - {data_point}")
-            label_pos = np.append(label_pos, start)
-            # Set the positions for the bars and use red color
-            axes[idx].barh(start, total_hits, color='red', height = 0.4)
-            axes[idx].text(total_hits , start, f"{int(total_hits)}", ha='left', va='center')
-            start += 1
-        # Set the positions for the labels
-        axes[idx].set_yticks(label_pos)
-        # Set the labels
-        axes[idx].set_yticklabels(labels, fontsize=12, color='black')
-        # Set a title and axis labels for each subplot
-        #axes[idx].set_title(f'Top 5 Data Points in {country} by Total Hits', fontsize=12)
-    # Set a new lower position for the x-axis
-    axes[-1].set_xlim(9, max(df_filtered['hits_count']) + 1)
-    # Remove top and right spines for each subplot
-    for ax in axes:
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-    # Set common x-axis labels
-    fig.text(0.5, 0.04, 'Total Hits', ha='center', fontsize=12)
-    fig.text(0.08, 0.95, '      Country          Data      ', va='top', rotation='horizontal', fontsize=12)
-    # Remove grid
-    for ax in axes:
-        ax.grid(False)  
-    plt.tight_layout(rect=[0.05, 0.05, 0.95, 0.95])
-    plt.savefig(f"./sections/NginX/Image/criticalip.png")
-    # plt.show()
+    if len(top_5_countries) == 0 :
+        print('ไม่มีข้อมูล')
+    else : 
+        fig, axes = plt.subplots(nrows=len(top_5_countries), ncols=1, figsize=(12, 4), sharex=True)
+        for idx, country in enumerate(top_5_countries):
+            # Filter data for the current country
+            country_data = df_filtered[df_filtered['country'] == country]
+            country_data
+            # Get the top 5 data points for the current country and sort in descending order based on hits_count
+            top_5_data = country_data.groupby('data')['hits_count'].sum().nlargest(5).sort_values(ascending=True).index
+            top_5_data
+            # Initialize variables for positioning
+            start = 0
+            gap = 0.2
+            labels = []
+            label_pos = np.array([])
+            # Loop through the top 5 data points for the current country
+            for data_point in top_5_data:
+                data_point_info = country_data[country_data['data'] == data_point]
+                total_hits = data_point_info['hits_count'].sum()
+                # Add the country name in front of the data point label
+                labels.append(f"{country} - {data_point}")
+                label_pos = np.append(label_pos, start)
+                # Set the positions for the bars and use red color
+                axes[idx].barh(start, total_hits, color='red', height = 0.4)
+                axes[idx].text(total_hits , start, f"{int(total_hits)}", ha='left', va='center')
+                start += 1
+            # Set the positions for the labels
+            axes[idx].set_yticks(label_pos)
+            # Set the labels
+            axes[idx].set_yticklabels(labels, fontsize=12, color='black')
+            # Set a title and axis labels for each subplot
+            #axes[idx].set_title(f'Top 5 Data Points in {country} by Total Hits', fontsize=12)
+        # Set a new lower position for the x-axis
+        axes[-1].set_xlim(9, max(df_filtered['hits_count']) + 1)
+        # Remove top and right spines for each subplot
+        for ax in axes:
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+        # Set common x-axis labels
+        fig.text(0.5, 0.04, 'Total Hits', ha='center', fontsize=12)
+        fig.text(0.08, 0.95, '      Country          Data      ', va='top', rotation='horizontal', fontsize=12)
+        # Remove grid
+        for ax in axes:
+            ax.grid(False)  
+        plt.tight_layout(rect=[0.05, 0.05, 0.95, 0.95])
+        plt.savefig(f"./sections/NginX/Image/criticalip.png")
+        # plt.show()
 
 
 
@@ -235,4 +240,3 @@ def nginx(month,year, doc, InlineImage) :
     }
     print('**********NginX Section Sucessful*****************')
     return context
-

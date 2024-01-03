@@ -455,7 +455,8 @@ def db(month,year,doc,InlineImage) :
 
 
         # Append the values to disk_space list
-        disk_space.append({
+        disk_space.append(
+            {
             'desc_space' : desc_space,
             'total_database_size_mb': total_database_size_space_mb, 
             'image_disk_space': InlineImage(doc,f"{image_disk_space}",width=Cm(14),height=Cm(11)),
@@ -485,6 +486,6 @@ def db(month,year,doc,InlineImage) :
     # doc.save(f'./Docxfile/{month}_{year}/Audittrail_edit.docx')
 
 
-
+    print(context)
     print('**********DataBase Section Sucessful*****************')
     return context

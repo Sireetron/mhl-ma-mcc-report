@@ -37,7 +37,7 @@ load_dotenv()
 file_queries = os.getenv('REPORT_SERVICE')
 month = datetime.now().month 
 year = datetime.now().year
-api_params = {'month': '08', 'year': '2023'}
+api_params = {'month': '12', 'year': '2023'}
 
 def get_first_and_last_day_of_month(year, month):
     first_day = datetime(year, month, 1)
@@ -144,7 +144,8 @@ ax = july.calendar_plot(
     title="Data Pipelines Health"
 )
 
-plt.suptitle("Data Pipelines Health")
+img_path = '12month_calendar_image'
+plt.savefig(img_path,bbox_inches='tight')
 
 
 # %%
@@ -695,14 +696,6 @@ import july
 import matplotlib.pyplot as plt
 
 # Assuming 'Execution Date' is a datetime column in your DataFrame
-ax = july.calendar_plot(
-    df['Execution Date'],  # Replace with your actual datetime column
-    df['Percent Success'],  # Replace with your actual success percentage column
-    cmap=airflow_cmap,
-    title="Data Pipelines Health"
-)
-img_path = '12month_calendar_image'
-plt.savefig(img_path,bbox_inches='tight')
 
 # writing data in each table
 doc = DocxTemplate

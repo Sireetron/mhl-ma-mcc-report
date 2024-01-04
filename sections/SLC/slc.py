@@ -54,10 +54,8 @@ def slc(month, year, day, doc, InlineImage):
     dataprep['create_at_month'] = pd.to_datetime(dataprep['created_at']).dt.month
     dataprep['create_at_year'] = pd.to_datetime(dataprep['created_at']).dt.year
     dataprep_fil = dataprep.merge(df_with_start, left_on='title', right_on='title')
-    datafil = dataprep_fil[['label_x', 'id_y', 'created_at', 'description', 'ticket_type_id_x', 'title','last_activity_at_x', 'status_x', 'assigned_to_x', 'create_at_month', 'create_at_year', 'closed_at_x', 'created_date']]
-    datafil = datafil.loc[datafil['label_x'].isnull()]
-
-
+    dataprep_fil = dataprep_fil[['label_x', 'id_y', 'created_at', 'description', 'ticket_type_id_x', 'title','last_activity_at_x', 'status_x', 'assigned_to_x', 'create_at_month', 'create_at_year', 'closed_at_x', 'created_date']]
+    datafil = dataprep_fil.loc[dataprep_fil['label_x'].isnull()]
 
 
 
@@ -116,7 +114,7 @@ def slc(month, year, day, doc, InlineImage):
     # Get Report date to table header
     thaiyear = int(year)+543
     alldate = _TH_FULL_MONTHS[month-1] + " "+str(thaiyear)
-    alldateandday = str(day) + " " + _TH_FULL_MONTHS[month-1] + " "+str(datetime.now().year +543)
+    alldateandday = str(day) + " " + _TH_FULL_MONTHS[datetime.now().month-1] + " "+str(datetime.now().year +543)
 
 
 
@@ -188,6 +186,24 @@ def slc(month, year, day, doc, InlineImage):
         card_3, f'./sections/SLC/Image/inprogress.png', format='png')
 
 
+    
+    # ///////////////////TABLEAU/////////////////////////////#
+    print('dataprep_fil',dataprep_fil)
+    df_tb = dataprep_fil[dataprep_fil['label_x'].astype(str).str.contains('TABLEAU')]
+    df_tb_inmonth = df_tb.loc[((df_tb['create_at_month'] == month) & (df_tb['create_at_year']== year)) ]
+    
+    # ///////////////////TABLEAUPERFORM/////////////////////////////#
+    df_tb_perform_inmonth = df_tb_inmonth.loc[df_tb_inmonth['ticket_type_id_x'] == 11]
+    # print('df_tb_perform_inmonth',df_tb_perform_inmonth)
+    # ///////////////////TABLEAUATT/////////////////////////////#
+    df_tb_att_inmonth = df_tb_inmonth.loc[df_tb_inmonth['ticket_type_id_x'] == 9]
+    # print('df_tb_att_inmonth',df_tb_att_inmonth)
+
+
+
+
+
+
 
 
 
@@ -197,6 +213,8 @@ def slc(month, year, day, doc, InlineImage):
     base_jsonall = dataallticket.to_dict('records')
     base_jsonsuccess = datasuccess.to_dict('records')
     base_jsonop = dataop.to_dict('records')
+    base_df_tb_perform_inmonth = df_tb_perform_inmonth.to_dict('records')
+    base_df_tb_att_inmonth = df_tb_perform_inmonth.to_dict('records')
     context = {
         'project_manager': 'ณัฐพร นุตยสกุล',
         'project_status': 'MA',
@@ -210,7 +228,11 @@ def slc(month, year, day, doc, InlineImage):
         'slc_table3_have_no_data': len(base_jsonop) == 0,
         'slc_table2_have_no_data': len(base_jsonsuccess) == 0,
         'slc_table1_have_no_data': len(base_jsonall) == 0,
-        'allticket': f'{total_slc}  งาน'
+        'allticket': f'{total_slc}  งาน',
+        'tb_att_table' : base_df_tb_att_inmonth,
+        'tb_perform_table' : base_df_tb_perform_inmonth,
+        'tb_perform_table_have_no_data' : len(base_df_tb_perform_inmonth) == 0,
+        'tb_att_table_have_no_data' : len(base_df_tb_att_inmonth) ==0
 
     }
     print('**********SLC Section Sucessful*****************')

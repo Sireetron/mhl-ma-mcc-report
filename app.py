@@ -2,12 +2,12 @@
 # from reportlab.pdfgen import canvas
 # from utils.font import add_font
 # from sections.first_page import draw_first_page
-# from sections.SLC.slc import slc
-# from sections.NginX.nginx import nginx
-# from sections.Audittrail.audittrail import auditrail
-# from sections.IOT.iot import iot
 # from sections.DataBase.database_report import db
-from sections.Airflow.airflow_report_ma_last import airflow
+from sections.SLC.slc import slc
+from sections.NginX.nginx import nginx
+from sections.Audittrail.audittrail import auditrail
+from sections.IOT.iot import iot
+# from sections.Airflow.airflow_report_ma_last import airflow
 
 
 
@@ -42,8 +42,11 @@ print('day',day)
  
 def main():
     print("\033[1;31;40m" + f' Loading Report เดือน  {month} ปี  {year}' + "\033[0m")
-    doc = DocxTemplate("./sections/Template/Copy รายงานผลการบำรุงรักษาและสำรองข้อมูลประ.docx")
-    merged_bio =  airflow(month, year, doc, InlineImage)
+    doc = DocxTemplate("./sections/Template/Template Report MA 040167.docx")
+    merged_bio =  slc(month, year, day, doc, InlineImage)
+    # {'day':day,'month':month,'year':year,**nginx(month, year, doc, InlineImage),**auditrail(month, year, doc, InlineImage),**iot(month, year, doc, InlineImage), **slc(month, year, day, doc, InlineImage)}
+
+    # airflow(month, year, doc, InlineImage)
     # db(month, year, doc, InlineImage)
     # {'month':month,'year':year,**nginx(month, year, doc, InlineImage),**auditrail(month, year, doc, InlineImage),**iot(month, year, doc, InlineImage), **slc(month, year, day, doc, InlineImage),**db(month, year, doc, InlineImage)}
     # os.remove(["./sections/NginX/Image/topcountry.png","./sections/NginX/Image/topcountry.png","./sections/NginX/Image/topcountry.png"])

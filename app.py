@@ -6,7 +6,8 @@
 # from sections.NginX.nginx import nginx
 # from sections.Audittrail.audittrail import auditrail
 # from sections.IOT.iot import iot
-from sections.DataBase.database_report import db
+# from sections.DataBase.database_report import db
+from sections.Airflow.airflow_report_ma_last import airflow
 
 
 
@@ -42,7 +43,8 @@ print('day',day)
 def main():
     print("\033[1;31;40m" + f' Loading Report เดือน  {month} ปี  {year}' + "\033[0m")
     doc = DocxTemplate("./sections/Template/Copy รายงานผลการบำรุงรักษาและสำรองข้อมูลประ.docx")
-    merged_bio =  db(month, year, doc, InlineImage)
+    merged_bio =  airflow(month, year, doc, InlineImage)
+    # db(month, year, doc, InlineImage)
     # {'month':month,'year':year,**nginx(month, year, doc, InlineImage),**auditrail(month, year, doc, InlineImage),**iot(month, year, doc, InlineImage), **slc(month, year, day, doc, InlineImage),**db(month, year, doc, InlineImage)}
     # os.remove(["./sections/NginX/Image/topcountry.png","./sections/NginX/Image/topcountry.png","./sections/NginX/Image/topcountry.png"])
     # /////////////////////////

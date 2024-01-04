@@ -2,13 +2,14 @@
 # ##ETL_Calendar
 
 # %%
-def airflow(month,year,doc,InlineImage) :
+def airflow(month, year, doc, InlineImage) :
     from docxtpl import DocxTemplate,InlineImage
     from docx.shared import Cm
     import requests
     import pandas as pd
     import matplotlib.pyplot as plt
-    from utils import airflow_colors
+    # from utils import airflow_colors
+    # import psycopg2
     import os
     import plotly.express as px
     import plotly.graph_objects as go
@@ -20,28 +21,31 @@ def airflow(month,year,doc,InlineImage) :
     import croniter
     from datetime import datetime
     from datetime import datetime, timedelta
-    from utils import airflow_cmap
+    from sections.Airflow.utils import airflow_cmap
     import numpy as np
     import july
     from july.utils import date_range
     from matplotlib.colors import LinearSegmentedColormap
     import calendar
     from dotenv import load_dotenv
-    # import july
+    import july
 
     file_queries = os.getenv('REPORT_SERVICE')
 
     # Load environment variables from the .env file
     load_dotenv()
 
-    month = datetime.now().month -1
-    year = datetime.now().year
-    api_params = {'month': '09', 'year': '2023'}
+    # month = datetime.now().month -1
+    # year = datetime.now().year
+    api_params = {'month': month, 'year': year}
 
     def get_first_and_last_day_of_month(year, month):
         first_day = datetime(year, month, 1)
-        last_day = datetime(year, month + 1, 1) - timedelta(days=1)
-        
+        last_day = datetime(2023, 12, 31)
+
+
+        print('first_day',first_day)
+        print('last_day',last_day)
         return first_day.strftime('%Y-%m-%d'), last_day.strftime('%Y-%m-%d')
 
     # Example for September 2023
@@ -86,7 +90,7 @@ def airflow(month,year,doc,InlineImage) :
     # %%
 
 
-    # Assuming df is your DataFra
+    # Assuming df is your DataFrame
     dates = date_range(first_day, last_day)
     data = df[df['Execution Date'].dt.month == month]["Percent Success"]
     print(data)
@@ -298,8 +302,7 @@ def airflow(month,year,doc,InlineImage) :
     )
 
 
-    img_path = 'job_scheldule_cycle_image'
-    plt.savefig(img_path,bbox_inches='tight')
+    fig.write_image('job_scheldule_cycle_image.png')
     # Show the plot
     # fig.show()
 
@@ -446,7 +449,7 @@ def airflow(month,year,doc,InlineImage) :
     import matplotlib.pyplot as plt
 
     plt.rcParams['font.family'] = 'Tahoma'
-
+    print('df_api',df_api)
     # Sort the DataFrame in descending order by 'percent_fail'
     fail_df = df_api.sort_values('percent_fail', ascending=False)
 
@@ -691,12 +694,26 @@ def airflow(month,year,doc,InlineImage) :
 
     # %%
 
+    import july
+    import matplotlib.pyplot as plt
+
+    # Assuming 'Execution Date' is a datetime column in your DataFrame
+    ax = july.calendar_plot(
+        df['Execution Date'],  # Replace with your actual datetime column
+        df['Percent Success'],  # Replace with your actual success percentage column
+        cmap=airflow_cmap,
+        title="Data Pipelines Health"
+    )
+    img_path = '12month_calendar_image'
+    plt.savefig(img_path,bbox_inches='tight')
+
     # writing data in each table
     doc = DocxTemplate
     context = {
+
         'dag_all': df['dag_all'][0], ##from dag_all.py
         'dag_is_active': df['dag_is_active'][0], ##from dag_all.py
-        'dag_inactive': df['job_inactive'][0], ##from dag_all.py
+        'job_inactive': df['job_inactive'][0], ##from dag_all.py
         'dag_is_talend': df['dag_is_talend'][0], ##from dag_all.py
         'dag_is_python': df['dag_is_python'][0], ##from dag_all.py
         'normal_count': df_api['normal_count'][0], ##from sum_etl.py
@@ -708,12 +725,16 @@ def airflow(month,year,doc,InlineImage) :
         'total_success': df_total_runs['total_success'][0], #from total_run.py
         'total_failures': df_total_runs['total_failures'][0], #from total_run.py
         'success_rate': df_total_runs['success_rate'][0], #from total_run.py
-        'Monthly_work__process_summary_image':InlineImage(doc,"./sections/Airflow/Monthly_work__process_summary_image.png",width=Cm(16)),
-        'job_scheldule_cycle_image':InlineImage(doc,"./sections/Airflow/job_scheldule_cycle_image.png",width=Cm(16)),
-        'job_overall_status_image':InlineImage(doc,"./sections/Airflow/job_overall_status_image.png",width=Cm(16)),
-        'job_detail_image':InlineImage(doc,"./sections/Airflow/job_detail_image.png",width=Cm(16))
+        'Monthly_work__process_summary_image':InlineImage(doc,"./Airflow/Monthly_work__process_summary_image.png",width=Cm(16)),
+        'job_scheldule_cycle_image':InlineImage(doc,"./Airflow/job_scheldule_cycle_image.png",width=Cm(16)),
+        'job_overall_status_image':InlineImage(doc,"./Airflow/job_overall_status_image.png",width=Cm(16)),
+        'job_detail_image':InlineImage(doc,"./Airflow/job_detail_image.png",width=Cm(16)),
+        '12month_calendar_image':InlineImage(doc,"./Airflow/12month_calendar_image.png",width=Cm(16))
+        
+        
         }
-    print('context_',context)
-    return context
 
+
+        # print(context)
+    return context
 

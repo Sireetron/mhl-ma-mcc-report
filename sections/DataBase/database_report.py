@@ -34,6 +34,7 @@ queries_ = BeautifulSoup(html_content, 'html.parser')
 print(queries_.prettify())
 
 # %%
+# find content
 tabbable = queries_.find('div', {'class': 'tabbable'})
 tabbable
 
@@ -138,6 +139,7 @@ print(type.prettify())
 # print(type.prettify())
 
 # %%
+# find content
 analy = type.find('div', {'class': 'analysis-item row', 'id': 'queries-by-type'})
 analy
 
@@ -161,12 +163,10 @@ match = re.search(r'var data_26 = \[\s*(\[.*\])\s*\];', element2)
 
 if match:
     extracted_list_str = match.group(1)
-    print(extracted_list_str)
-    print(type(extracted_list_str))
     queries_type = ast.literal_eval(f"[{extracted_list_str}]")
 
-# %%
 queries_type
+
 
 # %%
 # Use a for loop to iterate through each sublist in queries_type
@@ -175,9 +175,8 @@ for sublist in queries_type:
     if sublist[0] == 'Sum query types < 2%':
         # Change the name to "other"
         sublist[0] = 'OTHER'
-
-# Print my_list_of_lists after changing the name
-print(queries_type)
+        
+queries_type
 
 # %%
 # import matplotlib.pyplot as plt
@@ -383,10 +382,9 @@ for df_disk_space in json_data:
         'image_disk_space': image_disk_space
     })
 
-# Now, disk_space contains information for each iteration
-print(disk_space)
+disk_space
 
-# %%
+# show values in variables
 num_unique_queries, num_queries, queries_per_second, disk_space
 
 
@@ -402,12 +400,6 @@ context = {
     'disk_space': disk_space
     }
 
-
-# doc.render(context)
-# doc.save(f'./Docxfile/{month}_{year}/Audittrail_edit.docx')
-
-
-def auditrail() :
+def database_report() :
     # print(context)
     return context
-
